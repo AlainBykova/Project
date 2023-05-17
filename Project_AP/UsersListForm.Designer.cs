@@ -37,7 +37,8 @@
             IconPanel = new Panel();
             AddButton = new Button();
             DeleteButton = new Button();
-            UsersList = new CheckedListBox();
+            flowLayoutPanel1 = new FlowLayoutPanel();
+            UsersList = new FlowLayoutPanel();
             tableLayoutPanel3 = new TableLayoutPanel();
             MenuPanel = new Panel();
             StorageLabel = new Label();
@@ -86,6 +87,7 @@
             tableLayoutPanel1.Controls.Add(SearchPanel, 1, 1);
             tableLayoutPanel1.Controls.Add(AddButton, 1, 3);
             tableLayoutPanel1.Controls.Add(DeleteButton, 3, 3);
+            tableLayoutPanel1.Controls.Add(flowLayoutPanel1, 0, 0);
             tableLayoutPanel1.Controls.Add(UsersList, 1, 5);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(69, 75);
@@ -123,6 +125,7 @@
             SearchTextBox.Name = "SearchTextBox";
             SearchTextBox.Size = new Size(452, 32);
             SearchTextBox.TabIndex = 1;
+            SearchTextBox.KeyDown += SearchTextBox_KeyDown;
             // 
             // SearchButton
             // 
@@ -174,21 +177,23 @@
             DeleteButton.Text = "Удалить";
             DeleteButton.UseVisualStyleBackColor = false;
             // 
+            // flowLayoutPanel1
+            // 
+            flowLayoutPanel1.Location = new Point(3, 3);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new Size(29, 13);
+            flowLayoutPanel1.TabIndex = 3;
+            // 
             // UsersList
             // 
-            UsersList.AccessibleRole = AccessibleRole.ScrollBar;
             UsersList.BackColor = Color.FromArgb(215, 214, 255);
-            UsersList.BorderStyle = BorderStyle.None;
             tableLayoutPanel1.SetColumnSpan(UsersList, 4);
             UsersList.Dock = DockStyle.Fill;
-            UsersList.FormattingEnabled = true;
-            UsersList.Items.AddRange(new object[] { "Ничего", "Нет", "Простите" });
+            UsersList.FlowDirection = FlowDirection.TopDown;
             UsersList.Location = new Point(38, 116);
-            UsersList.MultiColumn = true;
             UsersList.Name = "UsersList";
             UsersList.Size = new Size(664, 242);
-            UsersList.TabIndex = 0;
-            UsersList.ThreeDCheckBoxes = true;
+            UsersList.TabIndex = 4;
             // 
             // tableLayoutPanel3
             // 
@@ -221,36 +226,33 @@
             // 
             // StorageLabel
             // 
-            StorageLabel.AutoSize = true;
             StorageLabel.BackColor = Color.FromArgb(143, 142, 191);
-            StorageLabel.Dock = DockStyle.Fill;
-            StorageLabel.Location = new Point(221, 0);
+            StorageLabel.Dock = DockStyle.Right;
+            StorageLabel.Location = new Point(174, 0);
             StorageLabel.Name = "StorageLabel";
-            StorageLabel.Size = new Size(125, 20);
+            StorageLabel.Size = new Size(125, 28);
             StorageLabel.TabIndex = 3;
             StorageLabel.Text = "Место Хранения";
             StorageLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // EquipmentLabel
             // 
-            EquipmentLabel.AutoSize = true;
+            EquipmentLabel.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             EquipmentLabel.BackColor = Color.FromArgb(143, 142, 191);
-            EquipmentLabel.Dock = DockStyle.Left;
             EquipmentLabel.Location = new Point(108, 0);
             EquipmentLabel.Name = "EquipmentLabel";
-            EquipmentLabel.Size = new Size(113, 20);
+            EquipmentLabel.Size = new Size(113, 28);
             EquipmentLabel.TabIndex = 2;
             EquipmentLabel.Text = "Оборудование";
             EquipmentLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // UsersLabel
             // 
-            UsersLabel.AutoSize = true;
             UsersLabel.BackColor = Color.FromArgb(215, 214, 255);
             UsersLabel.Dock = DockStyle.Left;
             UsersLabel.Location = new Point(0, 0);
             UsersLabel.Name = "UsersLabel";
-            UsersLabel.Size = new Size(108, 20);
+            UsersLabel.Size = new Size(108, 28);
             UsersLabel.TabIndex = 0;
             UsersLabel.Text = "Пользователи";
             UsersLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -282,7 +284,6 @@
             SearchPanel.PerformLayout();
             tableLayoutPanel3.ResumeLayout(false);
             MenuPanel.ResumeLayout(false);
-            MenuPanel.PerformLayout();
             MainPanel.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -303,6 +304,7 @@
         private Label UsersLabel;
         private Panel MainPanel;
         private Label StorageLabel;
-        private CheckedListBox UsersList;
+        private FlowLayoutPanel flowLayoutPanel1;
+        private FlowLayoutPanel UsersList;
     }
 }

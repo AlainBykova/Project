@@ -165,8 +165,8 @@
             LoginField.Size = new Size(308, 53);
             LoginField.TabIndex = 3;
             LoginField.UseSystemPasswordChar = true;
-            LoginField.TextChanged += textBox1_TextChanged;
-            LoginField.KeyDown += textBox1_KeyDown;
+            LoginField.TextChanged += TextBox1_TextChanged;
+            LoginField.KeyDown += TextBox1_KeyDown;
             // 
             // WrongPasswordLabel
             // 

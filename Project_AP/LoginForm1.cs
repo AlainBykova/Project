@@ -34,17 +34,19 @@ namespace Project_AP
 
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void TextBox1_TextChanged(object sender, EventArgs e)
         {
             this.WrongPasswordLabel.Visible = false;
         }
 
-        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        private void TextBox1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter && LoginField.Text == "Admin123")
             {
-                UsersListForm newForm = new UsersListForm();
-                newForm.Size = this.Size;
+                UsersListForm newForm = new()
+                {
+                    Size = this.Size
+                };
                 newForm.Show();
                 this.Hide();
             }
@@ -58,8 +60,10 @@ namespace Project_AP
         {
             if (LoginField.Text == "Admin123")
             {
-                UsersListForm newForm = new UsersListForm();
-                newForm.Size = this.Size;
+                UsersListForm newForm = new()
+                {
+                    Size = this.Size
+                };
                 newForm.Show();
                 this.Hide();
             }
