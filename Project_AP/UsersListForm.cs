@@ -84,7 +84,7 @@ namespace Project_AP
                             Size = new Size(buttonWidth, checkWidth),
                             BackColor = Color.FromArgb(143, 142, 191),
                             Dock = DockStyle.Right,
-                            Tag = item,
+                            Tag = item.Id,
                         };
                         detailsButton.Click += DetailsButton_Click;
                         ManyUsers.Controls.Add(detailsButton);
@@ -139,12 +139,24 @@ namespace Project_AP
         {
             SearchButton_Click(sender, e);
         }
+
         private void DetailsButton_Click(object sender, EventArgs e)
         {
             Button button = (Button)sender;
-            User participant = (User)button.Tag;
+            int user_id = (int)button.Tag;
 
-            /// открывается окно с инфо
+            UserDetailsForm newForm = new()
+            {
+                Size = this.Size
+            };
+            this.Hide();
+            newForm.Tag = user_id;
+            newForm.ShowDialog();
+
+            if (newForm.DialogResult == DialogResult.OK)
+            {
+                this.Show();
+            }
         }
 
         private void EquipmentLabel_MouseEnter(object sender, EventArgs e)

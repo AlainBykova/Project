@@ -46,3 +46,4 @@ C:\Users\Настя\Source\Repos\TheSleepySparrow\Project\Project_AP\obj\Debug\n
 C:\Users\Настя\Source\Repos\TheSleepySparrow\Project\Project_AP\obj\Debug\net6.0-windows\Project_AP.genruntimeconfig.cache
 C:\Users\Настя\Source\Repos\TheSleepySparrow\Project\Project_AP\obj\Debug\net6.0-windows\ref\Project_AP.dll
 C:\Users\Настя\Source\Repos\TheSleepySparrow\Project\Project_AP\obj\Debug\net6.0-windows\Project_AP.EquipmentListForm.resources
+C:\Users\Настя\Source\Repos\TheSleepySparrow\Project\Project_AP\obj\Debug\net6.0-windows\Project_AP.UserDetailsForm.resources
