@@ -7,21 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using Newtonsoft.Json;
-using System.Net;
-using static System.Windows.Forms.DataFormats;
 
 namespace Project_AP
 {
-    public partial class UsersListForm : Form
+    public partial class EquipmentListForm : Form
     {
-
-        public UsersListForm()
+        public EquipmentListForm()
         {
             InitializeComponent();
-
             tableLayoutPanel5.BorderStyle = BorderStyle.FixedSingle;
             tableLayoutPanel5.CellBorderStyle = TableLayoutPanelCellBorderStyle.None;
         }
@@ -146,59 +139,9 @@ namespace Project_AP
 
             /// открывается окно с инфо
         }
-
-        private void EquipmentLabel_MouseEnter(object sender, EventArgs e)
+        private void EquipmentListForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Label EquipmentLabel = (Label)sender;
-            EquipmentLabel.BackColor = Color.FromArgb(172, 171, 221);
-            EquipmentLabel.BorderStyle = BorderStyle.FixedSingle;
-        }
-
-        private void EquipmentLabel_MouseLeave(object sender, EventArgs e)
-        {
-            Label EquipmentLabel = (Label)sender;
-            EquipmentLabel.BackColor = Color.FromArgb(143, 142, 191);
-            EquipmentLabel.BorderStyle = BorderStyle.None;
-        }
-
-        private void StorageLabel_MouseEnter(object sender, EventArgs e)
-        {
-            Label StorageLabel = (Label)sender;
-            StorageLabel.BackColor = Color.FromArgb(172, 171, 221);
-            StorageLabel.BorderStyle = BorderStyle.FixedSingle;
-        }
-
-        private void StorageLabel_MouseLeave(object sender, EventArgs e)
-        {
-            Label StorageLabel = (Label)sender;
-            StorageLabel.BackColor = Color.FromArgb(143, 142, 191);
-            StorageLabel.BorderStyle = BorderStyle.None;
-        }
-
-        private void EquipmentLabel_Click(object sender, EventArgs e)
-        {
-            openNewForm();
-        }
-
-        private void StorageLabel_Click(object sender, EventArgs e)
-        {
-            openNewForm();
-        }
-
-        private void openNewForm()
-        {
-            // Создание новой формы
-            EquipmentListForm newForm = new()
-            {
-                Size = this.Size
-            };
-
-            // Отображение новой формы
-            newForm.Show();
-            // Закрытие текущей формы
-            this.Hide();
-
+            Application.Exit();
         }
     }
-
 }
