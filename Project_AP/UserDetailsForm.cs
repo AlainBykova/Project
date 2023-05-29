@@ -39,7 +39,7 @@ namespace Project_AP
                 try
                 {
                     User user = await userService.GetUserByIdApi();
-                    int height = (int)(flowLayoutPanel1.Height / 8);
+                    int height = (int)(flowLayoutPanel1.Height / 6);
                     for (int i = 1; i < 5; i++)
                     {
                         Panel panel = new()
@@ -111,7 +111,8 @@ namespace Project_AP
 
                                         pictureBox1.Image = image;
                                         pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-
+                                        pictureBox1.BackColor = Color.White;
+                                        panel3.BackColor = Color.White;
                                     }
                                 }
                                 catch (Exception ex)
@@ -121,7 +122,7 @@ namespace Project_AP
                             }
                         }
                     }
-                    
+
                 }
                 catch (Exception ex)
                 {
@@ -176,7 +177,10 @@ namespace Project_AP
 
         private void UserDetailsForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            //Application.Exit();
+            //if (e.CloseReason == CloseReason.UserClosing)
+            //{
+            //    Application.Exit();
+            //}
         }
 
         private void panel2_Click(object sender, EventArgs e)
@@ -184,5 +188,6 @@ namespace Project_AP
             this.Close();
             DialogResult = DialogResult.OK;
         }
+
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Project_AP
 {
-    partial class UserDetailsForm
+    partial class StorageListForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserDetailsForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StorageListForm));
             panel1 = new Panel();
             tableLayoutPanel1 = new TableLayoutPanel();
             tableLayoutPanel2 = new TableLayoutPanel();
@@ -37,19 +37,19 @@
             EquipmentLabel = new Label();
             UsersLabel = new Label();
             tableLayoutPanel4 = new TableLayoutPanel();
-            panel2 = new Panel();
             tableLayoutPanel5 = new TableLayoutPanel();
-            flowLayoutPanel1 = new FlowLayoutPanel();
-            panel3 = new Panel();
-            pictureBox1 = new PictureBox();
+            IconPanel = new Panel();
+            SearchButton = new Button();
+            SearchTextBox = new TextBox();
+            AddButton = new Button();
+            DeleteButton = new Button();
+            LocationList = new FlowLayoutPanel();
             panel1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
             tableLayoutPanel4.SuspendLayout();
             tableLayoutPanel5.SuspendLayout();
-            panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // panel1
@@ -86,7 +86,7 @@
             // 
             tableLayoutPanel2.BackColor = Color.FromArgb(172, 171, 221);
             tableLayoutPanel2.ColumnCount = 2;
-            tableLayoutPanel1.SetColumnSpan(tableLayoutPanel2, 4);
+            tableLayoutPanel1.SetColumnSpan(tableLayoutPanel2, 3);
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 65F));
             tableLayoutPanel2.Controls.Add(tableLayoutPanel3, 0, 1);
@@ -121,7 +121,7 @@
             // 
             // StorageLabel
             // 
-            StorageLabel.BackColor = Color.FromArgb(143, 142, 191);
+            StorageLabel.BackColor = Color.FromArgb(215, 214, 255);
             StorageLabel.Dock = DockStyle.Fill;
             StorageLabel.Location = new Point(186, 0);
             StorageLabel.Margin = new Padding(0);
@@ -130,9 +130,6 @@
             StorageLabel.TabIndex = 4;
             StorageLabel.Text = "Место Хранения";
             StorageLabel.TextAlign = ContentAlignment.MiddleCenter;
-            StorageLabel.Click += StorageLabel_Click;
-            StorageLabel.MouseEnter += StorageLabel_MouseEnter;
-            StorageLabel.MouseLeave += StorageLabel_MouseLeave;
             // 
             // EquipmentLabel
             // 
@@ -145,13 +142,12 @@
             EquipmentLabel.TabIndex = 3;
             EquipmentLabel.Text = "Оборудование";
             EquipmentLabel.TextAlign = ContentAlignment.MiddleCenter;
-            EquipmentLabel.Click += EquipmentLabel_Click;
             EquipmentLabel.MouseEnter += EquipmentLabel_MouseEnter;
             EquipmentLabel.MouseLeave += EquipmentLabel_MouseLeave;
             // 
             // UsersLabel
             // 
-            UsersLabel.BackColor = Color.FromArgb(215, 214, 255);
+            UsersLabel.BackColor = Color.FromArgb(143, 142, 191);
             UsersLabel.Dock = DockStyle.Fill;
             UsersLabel.Location = new Point(4, 0);
             UsersLabel.Margin = new Padding(4, 0, 0, 0);
@@ -160,116 +156,156 @@
             UsersLabel.TabIndex = 1;
             UsersLabel.Text = "Пользователи";
             UsersLabel.TextAlign = ContentAlignment.MiddleCenter;
+            UsersLabel.Click += UsersLabel_Click;
+            UsersLabel.MouseEnter += UsersLabel_MouseEnter;
+            UsersLabel.MouseLeave += UsersLabel_MouseLeave;
             // 
             // tableLayoutPanel4
             // 
             tableLayoutPanel4.BackColor = Color.White;
-            tableLayoutPanel4.ColumnCount = 5;
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 7.5F));
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 7.5F));
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 2.20588231F));
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 65.73529F));
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 17.5F));
-            tableLayoutPanel4.Controls.Add(panel2, 1, 1);
-            tableLayoutPanel4.Controls.Add(tableLayoutPanel5, 3, 2);
+            tableLayoutPanel4.ColumnCount = 6;
+            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
+            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
+            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 2.5F));
+            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
+            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 57.5F));
+            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
+            tableLayoutPanel4.Controls.Add(tableLayoutPanel5, 1, 1);
+            tableLayoutPanel4.Controls.Add(AddButton, 1, 3);
+            tableLayoutPanel4.Controls.Add(DeleteButton, 3, 3);
+            tableLayoutPanel4.Controls.Add(LocationList, 1, 5);
             tableLayoutPanel4.Dock = DockStyle.Fill;
-            tableLayoutPanel4.Location = new Point(60, 67);
-            tableLayoutPanel4.Margin = new Padding(0);
+            tableLayoutPanel4.Location = new Point(63, 70);
             tableLayoutPanel4.Name = "tableLayoutPanel4";
-            tableLayoutPanel4.RowCount = 4;
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 60F));
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
-            tableLayoutPanel4.Size = new Size(680, 360);
+            tableLayoutPanel4.RowCount = 7;
+            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 7.5F));
+            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 7.5F));
+            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 65F));
+            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel4.Size = new Size(674, 354);
             tableLayoutPanel4.TabIndex = 1;
-            // 
-            // panel2
-            // 
-            panel2.BackgroundImage = (Image)resources.GetObject("panel2.BackgroundImage");
-            panel2.BackgroundImageLayout = ImageLayout.Zoom;
-            panel2.Dock = DockStyle.Fill;
-            panel2.Location = new Point(50, 36);
-            panel2.Margin = new Padding(0);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(50, 36);
-            panel2.TabIndex = 0;
-            panel2.Click += panel2_Click;
             // 
             // tableLayoutPanel5
             // 
-            tableLayoutPanel5.ColumnCount = 2;
-            tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
-            tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
-            tableLayoutPanel5.Controls.Add(flowLayoutPanel1, 1, 0);
-            tableLayoutPanel5.Controls.Add(panel3, 0, 1);
+            tableLayoutPanel5.ColumnCount = 3;
+            tableLayoutPanel4.SetColumnSpan(tableLayoutPanel5, 4);
+            tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 6F));
+            tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 74F));
+            tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel5.Controls.Add(IconPanel, 0, 0);
+            tableLayoutPanel5.Controls.Add(SearchButton, 2, 0);
+            tableLayoutPanel5.Controls.Add(SearchTextBox, 1, 0);
             tableLayoutPanel5.Dock = DockStyle.Fill;
-            tableLayoutPanel5.Location = new Point(114, 72);
+            tableLayoutPanel5.Location = new Point(33, 17);
             tableLayoutPanel5.Margin = new Padding(0);
             tableLayoutPanel5.Name = "tableLayoutPanel5";
-            tableLayoutPanel5.RowCount = 3;
-            tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 7.40740728F));
-            tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 81.94444F));
-            tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 11.1111107F));
-            tableLayoutPanel5.Size = new Size(445, 216);
-            tableLayoutPanel5.TabIndex = 2;
+            tableLayoutPanel5.RowCount = 1;
+            tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel5.Size = new Size(605, 26);
+            tableLayoutPanel5.TabIndex = 6;
             // 
-            // flowLayoutPanel1
+            // IconPanel
             // 
-            flowLayoutPanel1.Dock = DockStyle.Fill;
-            flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
-            flowLayoutPanel1.Location = new Point(178, 0);
-            flowLayoutPanel1.Margin = new Padding(0);
-            flowLayoutPanel1.Name = "flowLayoutPanel1";
-            tableLayoutPanel5.SetRowSpan(flowLayoutPanel1, 3);
-            flowLayoutPanel1.Size = new Size(267, 216);
-            flowLayoutPanel1.TabIndex = 2;
+            IconPanel.BackgroundImage = (Image)resources.GetObject("IconPanel.BackgroundImage");
+            IconPanel.BackgroundImageLayout = ImageLayout.Zoom;
+            IconPanel.Dock = DockStyle.Fill;
+            IconPanel.Location = new Point(5, 5);
+            IconPanel.Margin = new Padding(5);
+            IconPanel.Name = "IconPanel";
+            IconPanel.Size = new Size(26, 16);
+            IconPanel.TabIndex = 4;
             // 
-            // panel3
+            // SearchButton
             // 
-            panel3.BackColor = Color.FromArgb(215, 214, 255);
-            panel3.Controls.Add(pictureBox1);
-            panel3.Dock = DockStyle.Fill;
-            panel3.Location = new Point(3, 18);
-            panel3.Name = "panel3";
-            panel3.Padding = new Padding(10);
-            panel3.Size = new Size(172, 170);
-            panel3.TabIndex = 3;
+            SearchButton.BackColor = Color.FromArgb(143, 142, 191);
+            SearchButton.Dock = DockStyle.Fill;
+            SearchButton.FlatAppearance.BorderSize = 0;
+            SearchButton.FlatStyle = FlatStyle.Flat;
+            SearchButton.Location = new Point(483, 0);
+            SearchButton.Margin = new Padding(0);
+            SearchButton.Name = "SearchButton";
+            SearchButton.Padding = new Padding(3, 0, 0, 0);
+            SearchButton.Size = new Size(122, 26);
+            SearchButton.TabIndex = 0;
+            SearchButton.Text = "Поиск";
+            SearchButton.UseVisualStyleBackColor = false;
+            SearchButton.Click += SearchButton_Click;
             // 
-            // pictureBox1
+            // SearchTextBox
             // 
-            pictureBox1.BackColor = Color.FromArgb(215, 214, 255);
-            pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox1.Dock = DockStyle.Fill;
-            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(10, 10);
-            pictureBox1.Margin = new Padding(10);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Padding = new Padding(5);
-            pictureBox1.Size = new Size(152, 150);
-            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox1.TabIndex = 0;
-            pictureBox1.TabStop = false;
+            SearchTextBox.BorderStyle = BorderStyle.None;
+            SearchTextBox.Dock = DockStyle.Fill;
+            SearchTextBox.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
+            SearchTextBox.Location = new Point(36, 0);
+            SearchTextBox.Margin = new Padding(0);
+            SearchTextBox.Name = "SearchTextBox";
+            SearchTextBox.Size = new Size(447, 40);
+            SearchTextBox.TabIndex = 1;
+            SearchTextBox.WordWrap = false;
+            SearchTextBox.KeyDown += SearchTextBox_KeyDown;
             // 
-            // UserDetailsForm
+            // AddButton
+            // 
+            AddButton.BackColor = Color.FromArgb(143, 142, 191);
+            AddButton.Dock = DockStyle.Fill;
+            AddButton.FlatAppearance.BorderSize = 0;
+            AddButton.FlatStyle = FlatStyle.Flat;
+            AddButton.Location = new Point(33, 60);
+            AddButton.Margin = new Padding(0);
+            AddButton.Name = "AddButton";
+            AddButton.Size = new Size(101, 26);
+            AddButton.TabIndex = 7;
+            AddButton.Text = "Добавить";
+            AddButton.UseVisualStyleBackColor = false;
+            // 
+            // DeleteButton
+            // 
+            DeleteButton.BackColor = Color.FromArgb(214, 215, 255);
+            DeleteButton.Dock = DockStyle.Fill;
+            DeleteButton.FlatAppearance.BorderSize = 0;
+            DeleteButton.FlatStyle = FlatStyle.Flat;
+            DeleteButton.Location = new Point(150, 60);
+            DeleteButton.Margin = new Padding(0);
+            DeleteButton.Name = "DeleteButton";
+            DeleteButton.Size = new Size(101, 26);
+            DeleteButton.TabIndex = 8;
+            DeleteButton.Text = "Удалить";
+            DeleteButton.UseVisualStyleBackColor = false;
+            // 
+            // LocationList
+            // 
+            LocationList.AutoSize = true;
+            LocationList.BackColor = Color.FromArgb(215, 214, 255);
+            tableLayoutPanel4.SetColumnSpan(LocationList, 4);
+            LocationList.Dock = DockStyle.Fill;
+            LocationList.FlowDirection = FlowDirection.TopDown;
+            LocationList.Location = new Point(33, 103);
+            LocationList.Margin = new Padding(0);
+            LocationList.Name = "LocationList";
+            LocationList.Size = new Size(605, 230);
+            LocationList.TabIndex = 9;
+            // 
+            // StorageListForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(panel1);
-            Name = "UserDetailsForm";
+            Name = "StorageListForm";
             ShowIcon = false;
-            FormClosed += UserDetailsForm_FormClosed;
-            Load += UserDetailsForm_Load;
-            Paint += UserDetailsForm_Paint;
+            FormClosed += StorageListForm_FormClosed;
+            Paint += StorageListForm_Paint;
             panel1.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel2.ResumeLayout(false);
             tableLayoutPanel3.ResumeLayout(false);
             tableLayoutPanel4.ResumeLayout(false);
+            tableLayoutPanel4.PerformLayout();
             tableLayoutPanel5.ResumeLayout(false);
-            panel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            tableLayoutPanel5.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -283,10 +319,12 @@
         private Label EquipmentLabel;
         private Label StorageLabel;
         private TableLayoutPanel tableLayoutPanel4;
-        private Panel panel2;
-        private PictureBox pictureBox1;
         private TableLayoutPanel tableLayoutPanel5;
-        private FlowLayoutPanel flowLayoutPanel1;
-        private Panel panel3;
+        private Panel IconPanel;
+        private Button SearchButton;
+        private TextBox SearchTextBox;
+        private Button AddButton;
+        private Button DeleteButton;
+        private FlowLayoutPanel LocationList;
     }
 }

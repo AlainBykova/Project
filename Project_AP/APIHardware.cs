@@ -39,7 +39,7 @@ namespace Project_AP
                 List<Hardware> allHardware = ParseHardwareResponse(responseBody);
 
                 // Filter the users based on the search string
-                List<Hardware> filteredHardware = allHardware.FindAll(hardware => (hardware.Name(searchString)));
+                List<Hardware> filteredHardware = allHardware.FindAll(hardware => (hardware.Name.Contains(searchString)));
 
                 return filteredHardware;
             }
@@ -61,14 +61,14 @@ namespace Project_AP
 
             List<Hardware> hardwares = new();
 
-            foreach (dynamic userJson in responseJson)
+            foreach (dynamic hdJson in responseJson)
             {
-                string name = userJson.name;
-                string description = userJson.description;
-                string created = userJson.created;
-                string image_link = userJson.image_link;
-                int id = userJson.id;
-                string type = userJson.type;
+                string name = hdJson.name;
+                string description = hdJson.description;
+                string created = hdJson.created;
+                string image_link = hdJson.image_link;
+                int id = hdJson.id;
+                string type = hdJson.type;
 
                 Hardware hardware = new()
                 {
@@ -86,7 +86,7 @@ namespace Project_AP
             return hardwares;
         }
 
-        public async Task<User> GetUserByIdApi()
+        public async Task<Hardware> GetHardwareByIdApi()
         {
             // Set the authorization header
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
@@ -105,30 +105,24 @@ namespace Project_AP
                 };
                 dynamic responseJson = JsonConvert.DeserializeObject(responseBody, settings);
 
-                string f_name = responseJson.first_name;
-                string l_name = responseJson.last_name;
-                string patronymic = responseJson.patronymic;
+                string name = responseJson.name;
+                string description = responseJson.description;
+                string created = responseJson.created;
                 string image_link = responseJson.image_link;
-                string email = responseJson.email;
-                string phone = responseJson.phone;
                 int id = responseJson.id;
                 string type = responseJson.type;
-                string created = responseJson.created;
 
-                User user = new()
+                Hardware hardware = new()
                 {
-                    First_name = f_name,
-                    Last_name = l_name,
-                    Patronymic = patronymic,
+                    Name = name,
+                    Created = created,
+                    Description = description,
                     Type = type,
                     Image_link = image_link,
-                    Email = email,
-                    PhoneNumber = phone,
                     Id = id,
-                    Created = created
                 };
 
-                return user;
+                return hardware;
             }
             else
             {

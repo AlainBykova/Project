@@ -7,26 +7,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using Newtonsoft.Json;
-using System.Net;
-using static System.Windows.Forms.DataFormats;
 
 namespace Project_AP
 {
-    public partial class UsersListForm : Form
+    public partial class StorageListForm : Form
     {
-
-        public UsersListForm()
+        public StorageListForm()
         {
             InitializeComponent();
-
             tableLayoutPanel5.BorderStyle = BorderStyle.FixedSingle;
             tableLayoutPanel5.CellBorderStyle = TableLayoutPanelCellBorderStyle.None;
         }
-
-        private void UsersListForm_FormClosed(object sender, FormClosedEventArgs e)
+        private void StorageListForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing)
             {
@@ -34,39 +26,38 @@ namespace Project_AP
             }
         }
 
-        private void UsersListForm_Paint(object sender, PaintEventArgs e)
+        private void StorageListForm_Paint(object sender, PaintEventArgs e)
         {
             ControlPaint.DrawBorder(e.Graphics, ClientRectangle, Color.FromArgb(143, 142, 191), ButtonBorderStyle.Solid);
         }
-
         private async void SearchButton_Click(object sender, EventArgs e)
         {
             string searchQuery = SearchTextBox.Text;
 
-            string apiUrl = "https://helow19274.ru/aip/api/user";
+            string apiUrl = "https://helow19274.ru/aip/api/location";
             string authorizationToken = "5RNYBdLduTDxQCcM8YYrb5nA:H4dScAyGbS89KgLgZBs2vPsk";
 
-            UserService userService = new(apiUrl, authorizationToken);
+            LocationService locationService = new(apiUrl, authorizationToken);
 
             try
             {
                 // Call GetUsersByName method and provide the search string
-                List<User> list = await userService.GetUsersNameApi(searchQuery);
+                List<Location> list = await locationService.GetLocationInfoApi(searchQuery);
 
-                UsersList.Controls.Clear();
+                LocationList.Controls.Clear();
                 // Do something with the filtered users
                 if (list.Count > 0)
                 {
-                    foreach (User item in list)
+                    foreach (Location item in list)
                     {
-                        int width = (int)(UsersList.Width * 0.9);
-                        int height = (int)(UsersList.Height * 0.2);
-                        Panel ManyUsers = new()
+                        int width = (int)(LocationList.Width * 0.9);
+                        int height = (int)(LocationList.Height * 0.2);
+                        Panel ManyLocations = new()
                         {
                             BackColor = Color.White,
                             Margin = new Padding(20),
                             Size = new Size(width, height),
-                            Location = new Point((UsersList.Width - width) / 2, height + 10),
+                            Location = new Point((LocationList.Width - width) / 2, height + 10),
                             Anchor = AnchorStyles.None,
                             Dock = DockStyle.None
                         };
@@ -77,7 +68,7 @@ namespace Project_AP
                             Size = new Size(checkWidth, checkWidth),
                             Dock = DockStyle.Left
                         };
-                        ManyUsers.Controls.Add(checkBox);
+                        ManyLocations.Controls.Add(checkBox);
 
                         int buttonWidth = (int)(width * 0.2);
                         Button detailsButton = new()
@@ -90,28 +81,28 @@ namespace Project_AP
                             Tag = item.Id,
                         };
                         detailsButton.Click += DetailsButton_Click;
-                        ManyUsers.Controls.Add(detailsButton);
+                        ManyLocations.Controls.Add(detailsButton);
 
                         Label nameLabel = new()
                         {
-                            Text = item.First_name + " " + item.Last_name + " " + item.Patronymic,
+                            Text = item.Name,
                             Margin = new Padding(10),
                             TextAlign = ContentAlignment.MiddleCenter,
                             //AutoSize = true,
-                            Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point),
+                            Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point),
                             Dock = DockStyle.Fill
                         };
-                        ManyUsers.Controls.Add(nameLabel);
+                        ManyLocations.Controls.Add(nameLabel);
 
-                        UsersList.Controls.Add(ManyUsers);
+                        LocationList.Controls.Add(ManyLocations);
                     }
                 }
                 else
                 {
-                    int width = (int)(UsersList.Width * 0.9);
-                    int height = (int)(UsersList.Height * 0.2);
-                    int loc = (int)((UsersList.Width - width) / 2);
-                    Panel noUsers = new()
+                    int width = (int)(LocationList.Width * 0.9);
+                    int height = (int)(LocationList.Height * 0.2);
+                    int loc = (int)((LocationList.Width - width) / 2);
+                    Panel noLoc = new()
                     {
                         BackColor = Color.White,
                         Padding = new Padding(10),
@@ -119,7 +110,7 @@ namespace Project_AP
                         Location = new Point(loc, height + 10)
                     };
 
-                    Label noUsersLabel = new()
+                    Label noLocLabel = new()
                     {
                         Text = "По вашему запросу ничего не найдено",
                         Margin = new Padding(10),
@@ -127,9 +118,9 @@ namespace Project_AP
                         Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point),
                         Dock = DockStyle.Fill
                     };
-                    noUsers.Controls.Add(noUsersLabel);
+                    noLoc.Controls.Add(noLocLabel);
 
-                    UsersList.Controls.Add(noUsers);
+                    LocationList.Controls.Add(noLoc);
                 }
 
             }
@@ -148,7 +139,7 @@ namespace Project_AP
             Button button = (Button)sender;
             int user_id = (int)button.Tag;
 
-            UserDetailsForm newForm = new()
+            LocationForm newForm = new()
             {
                 Size = this.Size
             };
@@ -176,23 +167,23 @@ namespace Project_AP
             EquipmentLabel.BorderStyle = BorderStyle.None;
         }
 
-        private void StorageLabel_MouseEnter(object sender, EventArgs e)
+        private void UsersLabel_MouseEnter(object sender, EventArgs e)
         {
-            Label StorageLabel = (Label)sender;
-            StorageLabel.BackColor = Color.FromArgb(172, 171, 221);
-            StorageLabel.BorderStyle = BorderStyle.FixedSingle;
+            Label UsersLabel = (Label)sender;
+            UsersLabel.BackColor = Color.FromArgb(172, 171, 221);
+            UsersLabel.BorderStyle = BorderStyle.FixedSingle;
         }
 
-        private void StorageLabel_MouseLeave(object sender, EventArgs e)
+        private void UsersLabel_MouseLeave(object sender, EventArgs e)
         {
-            Label StorageLabel = (Label)sender;
-            StorageLabel.BackColor = Color.FromArgb(143, 142, 191);
-            StorageLabel.BorderStyle = BorderStyle.None;
+            Label UsersLabel = (Label)sender;
+            UsersLabel.BackColor = Color.FromArgb(143, 142, 191);
+            UsersLabel.BorderStyle = BorderStyle.None;
         }
 
-        private void EquipmentLabel_Click(object sender, EventArgs e)
+        private void UsersLabel_Click(object sender, EventArgs e)
         {
-            EquipmentListForm newForm = new()
+            UsersListForm newForm = new()
             {
                 Size = this.Size
             };
@@ -200,18 +191,5 @@ namespace Project_AP
             newForm.ShowDialog();
             this.Close();
         }
-
-        private void StorageLabel_Click(object sender, EventArgs e)
-        {
-            StorageListForm newForm = new()
-            {
-                Size = this.Size
-            };
-            this.Hide();
-            newForm.ShowDialog();
-            this.Close();
-        }
-
     }
-
 }

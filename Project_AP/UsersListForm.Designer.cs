@@ -111,9 +111,10 @@
             AddButton.Dock = DockStyle.Fill;
             AddButton.FlatAppearance.BorderSize = 0;
             AddButton.FlatStyle = FlatStyle.Flat;
-            AddButton.Location = new Point(38, 70);
+            AddButton.Location = new Point(35, 67);
+            AddButton.Margin = new Padding(0);
             AddButton.Name = "AddButton";
-            AddButton.Size = new Size(100, 23);
+            AddButton.Size = new Size(106, 29);
             AddButton.TabIndex = 1;
             AddButton.Text = "Добавить";
             AddButton.UseVisualStyleBackColor = false;
@@ -124,9 +125,10 @@
             DeleteButton.Dock = DockStyle.Fill;
             DeleteButton.FlatAppearance.BorderSize = 0;
             DeleteButton.FlatStyle = FlatStyle.Flat;
-            DeleteButton.Location = new Point(161, 70);
+            DeleteButton.Location = new Point(158, 67);
+            DeleteButton.Margin = new Padding(0);
             DeleteButton.Name = "DeleteButton";
-            DeleteButton.Size = new Size(100, 23);
+            DeleteButton.Size = new Size(106, 29);
             DeleteButton.TabIndex = 2;
             DeleteButton.Text = "Удалить";
             DeleteButton.UseVisualStyleBackColor = false;
