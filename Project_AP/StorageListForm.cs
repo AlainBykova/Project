@@ -139,12 +139,14 @@ namespace Project_AP
             Button button = (Button)sender;
             int user_id = (int)button.Tag;
 
-            LocationForm newForm = new()
+            StorageForm newForm = new()
             {
                 Size = this.Size
             };
             this.Hide();
             newForm.Tag = user_id;
+            newForm.LocWidth = 12;
+            newForm.LocHeight = 12;
             newForm.ShowDialog();
 
             if (newForm.DialogResult == DialogResult.OK)
