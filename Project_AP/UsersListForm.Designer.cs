@@ -204,6 +204,7 @@
             // 
             // UsersList
             // 
+            UsersList.AutoScroll = true;
             UsersList.AutoSize = true;
             UsersList.BackColor = Color.FromArgb(215, 214, 255);
             UsersList.Dock = DockStyle.Fill;
@@ -212,6 +213,7 @@
             UsersList.Name = "UsersList";
             UsersList.Size = new Size(668, 246);
             UsersList.TabIndex = 4;
+            UsersList.WrapContents = false;
             // 
             // tableLayoutPanel3
             // 

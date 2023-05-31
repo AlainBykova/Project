@@ -142,6 +142,7 @@
             EquipmentLabel.TabIndex = 3;
             EquipmentLabel.Text = "Оборудование";
             EquipmentLabel.TextAlign = ContentAlignment.MiddleCenter;
+            EquipmentLabel.Click += EquipmentLabel_Click;
             EquipmentLabel.MouseEnter += EquipmentLabel_MouseEnter;
             EquipmentLabel.MouseLeave += EquipmentLabel_MouseLeave;
             // 
@@ -277,6 +278,7 @@
             // 
             // LocationList
             // 
+            LocationList.AutoScroll = true;
             LocationList.AutoSize = true;
             LocationList.BackColor = Color.FromArgb(215, 214, 255);
             tableLayoutPanel4.SetColumnSpan(LocationList, 4);
@@ -287,6 +289,7 @@
             LocationList.Name = "LocationList";
             LocationList.Size = new Size(605, 230);
             LocationList.TabIndex = 9;
+            LocationList.WrapContents = false;
             // 
             // StorageListForm
             // 

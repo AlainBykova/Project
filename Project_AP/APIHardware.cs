@@ -86,7 +86,7 @@ namespace Project_AP
             return hardwares;
         }
 
-        public async Task<Hardware> GetHardwareByIdApi()
+        public async Task<Hardware> GetHardwareByIdApi(int hardware_id)
         {
             // Set the authorization header
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
@@ -98,29 +98,10 @@ namespace Project_AP
             if (response.IsSuccessStatusCode)
             {
                 string responseBody = await response.Content.ReadAsStringAsync();
-                var settings = new JsonSerializerSettings
-                {
-                    NullValueHandling = NullValueHandling.Ignore,
-                    MissingMemberHandling = MissingMemberHandling.Ignore
-                };
-                dynamic responseJson = JsonConvert.DeserializeObject(responseBody, settings);
 
-                string name = responseJson.name;
-                string description = responseJson.description;
-                string created = responseJson.created;
-                string image_link = responseJson.image_link;
-                int id = responseJson.id;
-                string type = responseJson.type;
+                List<Hardware> allHardware = ParseHardwareResponse(responseBody);
 
-                Hardware hardware = new()
-                {
-                    Name = name,
-                    Created = created,
-                    Description = description,
-                    Type = type,
-                    Image_link = image_link,
-                    Id = id,
-                };
+                Hardware hardware = allHardware.SingleOrDefault(hardware => (hardware.Id == hardware_id));
 
                 return hardware;
             }

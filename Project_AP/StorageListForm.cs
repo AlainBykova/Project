@@ -193,5 +193,15 @@ namespace Project_AP
             newForm.ShowDialog();
             this.Close();
         }
+        private void EquipmentLabel_Click(object sender, EventArgs e)
+        {
+            EquipmentListForm newForm = new()
+            {
+                Size = this.Size
+            };
+            this.Hide();
+            newForm.ShowDialog();
+            this.Close();
+        }
     }
 }

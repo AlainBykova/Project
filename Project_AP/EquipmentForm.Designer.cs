@@ -1,6 +1,6 @@
 ﻿namespace Project_AP
 {
-    partial class UserDetailsForm
+    partial class EquipmentForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserDetailsForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EquipmentForm));
             panel1 = new Panel();
             tableLayoutPanel1 = new TableLayoutPanel();
             tableLayoutPanel2 = new TableLayoutPanel();
@@ -54,16 +54,17 @@
             // 
             // panel1
             // 
-            panel1.BackColor = Color.FromArgb(215, 214, 255);
             panel1.Controls.Add(tableLayoutPanel1);
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(0, 0);
+            panel1.Margin = new Padding(0);
             panel1.Name = "panel1";
             panel1.Size = new Size(800, 450);
             panel1.TabIndex = 0;
             // 
             // tableLayoutPanel1
             // 
+            tableLayoutPanel1.BackColor = Color.FromArgb(215, 214, 255);
             tableLayoutPanel1.ColumnCount = 3;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 7.5F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 85F));
@@ -80,7 +81,7 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 80F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
             tableLayoutPanel1.Size = new Size(800, 450);
-            tableLayoutPanel1.TabIndex = 0;
+            tableLayoutPanel1.TabIndex = 1;
             // 
             // tableLayoutPanel2
             // 
@@ -136,7 +137,7 @@
             // 
             // EquipmentLabel
             // 
-            EquipmentLabel.BackColor = Color.FromArgb(143, 142, 191);
+            EquipmentLabel.BackColor = Color.FromArgb(215, 214, 255);
             EquipmentLabel.Dock = DockStyle.Fill;
             EquipmentLabel.Location = new Point(93, 0);
             EquipmentLabel.Margin = new Padding(0);
@@ -145,13 +146,10 @@
             EquipmentLabel.TabIndex = 3;
             EquipmentLabel.Text = "Оборудование";
             EquipmentLabel.TextAlign = ContentAlignment.MiddleCenter;
-            EquipmentLabel.Click += EquipmentLabel_Click;
-            EquipmentLabel.MouseEnter += EquipmentLabel_MouseEnter;
-            EquipmentLabel.MouseLeave += EquipmentLabel_MouseLeave;
             // 
             // UsersLabel
             // 
-            UsersLabel.BackColor = Color.FromArgb(215, 214, 255);
+            UsersLabel.BackColor = Color.FromArgb(143, 142, 191);
             UsersLabel.Dock = DockStyle.Fill;
             UsersLabel.Location = new Point(4, 0);
             UsersLabel.Margin = new Padding(4, 0, 0, 0);
@@ -160,6 +158,9 @@
             UsersLabel.TabIndex = 1;
             UsersLabel.Text = "Пользователи";
             UsersLabel.TextAlign = ContentAlignment.MiddleCenter;
+            UsersLabel.Click += UsersLabel_Click;
+            UsersLabel.MouseEnter += UsersLabel_MouseEnter;
+            UsersLabel.MouseLeave += UsersLabel_MouseLeave;
             // 
             // tableLayoutPanel4
             // 
@@ -251,17 +252,17 @@
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
-            // UserDetailsForm
+            // EquipmentForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(panel1);
-            Name = "UserDetailsForm";
+            Name = "EquipmentForm";
             ShowIcon = false;
-            FormClosed += UserDetailsForm_FormClosed;
-            Load += UserDetailsForm_Load;
-            Paint += UserDetailsForm_Paint;
+            FormClosed += EquipmentForm_FormClosed;
+            Load += EquipmentForm_Load;
+            Paint += EquipmentForm_Paint;
             panel1.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel2.ResumeLayout(false);
@@ -279,14 +280,14 @@
         private TableLayoutPanel tableLayoutPanel1;
         private TableLayoutPanel tableLayoutPanel2;
         private TableLayoutPanel tableLayoutPanel3;
-        private Label UsersLabel;
-        private Label EquipmentLabel;
         private Label StorageLabel;
+        private Label EquipmentLabel;
+        private Label UsersLabel;
         private TableLayoutPanel tableLayoutPanel4;
         private Panel panel2;
-        private PictureBox pictureBox1;
         private TableLayoutPanel tableLayoutPanel5;
         private FlowLayoutPanel flowLayoutPanel1;
         private Panel panel3;
+        private PictureBox pictureBox1;
     }
 }
