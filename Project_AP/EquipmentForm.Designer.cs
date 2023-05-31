@@ -195,7 +195,7 @@
             panel2.Name = "panel2";
             panel2.Size = new Size(51, 36);
             panel2.TabIndex = 0;
-            panel2.Click += panel2_Click;
+            panel2.Click += Panel2_Click;
             // 
             // tableLayoutPanel5
             // 

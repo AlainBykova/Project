@@ -48,7 +48,7 @@ namespace Project_AP
 
                 try
                 {
-                    List<Rack> racks = await rackService.GetRackInfoApi(loc_id);
+                    List<Rack> racks = await rackService.GetRackInfoUsingLocationIdApi(loc_id);
                     int height = (int)(flowLayoutPanel1.Height / 6);
 
                 }

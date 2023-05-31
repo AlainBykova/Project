@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Project_AP;
 
 namespace Project_AP
 {
@@ -20,100 +21,52 @@ namespace Project_AP
             this.apiUrl = apiUrl;
             this.authorizationToken = authorizationToken;
         }
-
+        // Список всего оборудования (для поиска)
         public async Task<List<Hardware>> GetHardwareInfoApi(string searchString)
         {
-            // Set the authorization header
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
-
-            // Make the API request to retrieve all users
             HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
 
-            // Check if the request was successful
+            // Проверка на успешный запрос апи
             if (response.IsSuccessStatusCode)
             {
-                // Read the response content
                 string responseBody = await response.Content.ReadAsStringAsync();
+                List<Hardware> allHardware = ParseResponseHardware.InfoAllHardware(responseBody);
 
-                // Parse the response and extract the list of users
-                List<Hardware> allHardware = ParseHardwareResponse(responseBody);
-
-                // Filter the users based on the search string
+                // фильтр
                 List<Hardware> filteredHardware = allHardware.FindAll(hardware => (hardware.Name.Contains(searchString)));
-
                 return filteredHardware;
             }
             else
             {
-                // Handle the case when the API request fails
                 throw new Exception($"API request failed with status code: {response.StatusCode}");
             }
         }
 
-        private static List<Hardware> ParseHardwareResponse(string responseBody)
-        {
-            var settings = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Include,
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
-            dynamic responseJson = JsonConvert.DeserializeObject(responseBody, settings);
-
-            List<Hardware> hardwares = new();
-
-            foreach (dynamic hdJson in responseJson)
-            {
-                string name = hdJson.name;
-                string description = hdJson.description;
-                string created = hdJson.created;
-                string image_link = hdJson.image_link;
-                int id = hdJson.id;
-                string type = hdJson.type;
-
-                Hardware hardware = new()
-                {
-                    Name = name,
-                    Created = created,
-                    Description = description,
-                    Type = type,
-                    Image_link = image_link,
-                    Id = id,
-                };
-
-                hardwares.Add(hardware);
-            }
-
-            return hardwares;
-        }
-
+        // поиск конкретного оборудования по его id
         public async Task<Hardware> GetHardwareByIdApi(int hardware_id)
         {
-            // Set the authorization header
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
-
-            // Make the API request to retrieve all users
             HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
 
-            // Check if the request was successful
+            // Проверка успешного запроса апи
             if (response.IsSuccessStatusCode)
             {
                 string responseBody = await response.Content.ReadAsStringAsync();
+                List<Hardware> allHardware = ParseResponseHardware.InfoHardware(responseBody);
 
-                List<Hardware> allHardware = ParseHardwareResponse(responseBody);
-
+                // фильтр
                 Hardware hardware = allHardware.SingleOrDefault(hardware => (hardware.Id == hardware_id));
-
                 return hardware;
             }
             else
             {
-                // Handle the case when the API request fails
                 throw new Exception($"API request failed with status code: {response.StatusCode}");
-
             }
         }
     }
 
+    // описание класса
     public class Hardware
     {
         public string Name { get; set; }
@@ -123,5 +76,17 @@ namespace Project_AP
         public int Id { get; set; }
         public string Created { get; set; }
         public List<string> Specifications { get; set; }
+        public int Location { get; set; }
+        public int Location_Name { get; set; }
+        public int Location_Width { get; set; }
+        public int Location_Height { get; set; }
+        public int Rack { get; set; }
+        public int Rack_Width { get; set; }
+        public int Rack_Height { get; set; }
+        public int Rack_X { get; set; }
+        public int Rack_Y { get; set; }
+        public int Stock { get; set; }
+        public int Rack_position { get; set; }
+        public int Count { get; set; }
     }
 }

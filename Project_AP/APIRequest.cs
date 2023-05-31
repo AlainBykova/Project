@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using Project_AP;
 
 namespace Project_AP
 {
@@ -23,132 +24,46 @@ namespace Project_AP
             this.authorizationToken = authorizationToken;
         }
 
+        // данные о запросах через Id пользователя
         public async Task<List<Request>> GetRequestApi(int user_id)
         {
-            // Set the authorization header
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
-
-            // Make the API request to retrieve all users
             HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
 
-            // Check if the request was successful
+            // Проверка на успешный запрос к апи
             if (response.IsSuccessStatusCode)
             {
-                // Read the response content
                 string responseBody = await response.Content.ReadAsStringAsync();
+                List<Request> allRequests = ParseResponseRequest.InfoRequest(responseBody);
 
-                // Parse the response and extract the list of users
-                List<Request> allRequests = ParseRequestResponse(responseBody);
-
-                // Filter the users based on the search string
+                // Фильтры
                 List<Request> filteredRequest = allRequests.FindAll(request => (request.User == user_id));
-
                 return filteredRequest;
             }
             else
             {
-                // Handle the case when the API request fails
                 throw new Exception($"API request failed with status code: {response.StatusCode}");
             }
         }
 
-        private static List<Request> ParseRequestResponse(string responseBody)
+        // Получение данных о конкретном запросе по его id
+        public async Task<Request> GetRequestByIdApi(int request_id)
         {
-            var settings = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Include,
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
-            dynamic responseJson = JsonConvert.DeserializeObject(responseBody, settings);
-
-            List<Request> requests = new();
-
-            foreach (dynamic reqJson in responseJson)
-            {
-                int user = reqJson.user;
-                int location = reqJson.location;
-                string status = reqJson.status;
-                string comment = reqJson.comment;
-                string taken_date = reqJson.taken_date;
-                string return_date = reqJson.return_date;
-                int issued_by = reqJson.issued_by;
-                int id = reqJson.id;
-                int hardware = reqJson.hardware;
-                int stock = reqJson.stock;
-                int count = reqJson.count;
-
-                Request request = new()
-                {
-                    User = user,
-                    Location = location,
-                    Status = status,
-                    Comment = comment,
-                    Taken_date = taken_date,
-                    Return_date = return_date,
-                    Issued_by = issued_by,
-                    Hardware = hardware,
-                    Stock = stock,
-                    Count = count,
-                    Id = id,
-                };
-
-                requests.Add(request);
-            }
-
-            return requests;
-        }
-
-        public async Task<Request> GetRequestByIdApi()
-        {
-            // Set the authorization header
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
-
-            // Make the API request to retrieve all users
             HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
 
-            // Check if the request was successful
+            // Проверка на успешный запрос к апи
             if (response.IsSuccessStatusCode)
             {
                 string responseBody = await response.Content.ReadAsStringAsync();
-                var settings = new JsonSerializerSettings
-                {
-                    NullValueHandling = NullValueHandling.Ignore,
-                    MissingMemberHandling = MissingMemberHandling.Ignore
-                };
-                dynamic reqJson = JsonConvert.DeserializeObject(responseBody, settings);
+                List<Request> allRequests = ParseResponseRequest.InfoRequest(responseBody);
 
-                int user = reqJson.user;
-                int location = reqJson.location;
-                string status = reqJson.status;
-                string comment = reqJson.comment;
-                string taken_date = reqJson.taken_date;
-                string return_date = reqJson.return_date;
-                int issued_by = reqJson.issued_by;
-                int id = reqJson.id;
-                int hardware = reqJson.hardware;
-                int stock = reqJson.stock;
-                int count = reqJson.count;
-
-                Request request = new()
-                {
-                    User = user,
-                    Location = location,
-                    Status = status,
-                    Comment = comment,
-                    Taken_date = taken_date,
-                    Return_date = return_date,
-                    Issued_by = issued_by,
-                    Hardware = hardware,
-                    Stock = stock,
-                    Count = count,
-                    Id = id,
-                };
-
-                return request;
+                // Фильтры
+                Request filteredRequest = allRequests.SingleOrDefault(request => (request.Id == request_id));
+                return filteredRequest;
             }
             else
             {
-                // Handle the case when the API request fails
                 throw new Exception($"API request failed with status code: {response.StatusCode}");
 
             }

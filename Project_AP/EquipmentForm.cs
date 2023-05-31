@@ -29,15 +29,15 @@ namespace Project_AP
             {
                 int hardware_id = (int)Tag;
 
-                string apiUrl = "https://helow19274.ru/aip/api/hardware";
-                string authorizationToken = "5RNYBdLduTDxQCcM8YYrb5nA:H4dScAyGbS89KgLgZBs2vPsk";
-                HardwareService hardwareService = new(apiUrl, authorizationToken);
-
+                //string apiUrl = "https://helow19274.ru/aip/api/hardware";
+                //string authorizationToken = "5RNYBdLduTDxQCcM8YYrb5nA:H4dScAyGbS89KgLgZBs2vPsk";
+                //HardwareService hardwareService = new(apiUrl, authorizationToken);
+                API api = new API();
                 try
                 {
-                    Hardware hardware = await hardwareService.GetHardwareByIdApi(hardware_id);
+                    Hardware hardware = await api.GetAllInfoHardware(hardware_id);
                     int height = (int)(flowLayoutPanel1.Height / 6);
-                    for (int i = 1; i < 4; i++)
+                    for (int i = 1; i < 5; i++)
                     {
                         Panel panel = new()
                         {
@@ -74,6 +74,11 @@ namespace Project_AP
                                 }
                                 label.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
                                 break;
+                            case 4:
+                                label.Text = hardware.Rack + " " + hardware.Stock + " " + hardware.Location;
+                                label.Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point);
+                                label.ForeColor = Color.FromArgb(143, 142, 191);
+                                break;
                         }
                         panel.Controls.Add(label);
 
@@ -84,27 +89,25 @@ namespace Project_AP
                     if (!string.IsNullOrEmpty(hardware.Image_link))
                     {
 
-                        if (Uri.TryCreate(hardware.Image_link, UriKind.Absolute, out Uri uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
+                        if (Uri.TryCreate(hardware.Image_link, UriKind.Absolute, result: out Uri uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
                         {
-                            using (WebClient client = new WebClient())
+                            using WebClient client = new();
+                            try
                             {
-                                try
-                                {
-                                    byte[] imageData = client.DownloadData(uri);
-                                    using (var stream = new System.IO.MemoryStream(imageData))
-                                    {
-                                        Image image = Image.FromStream(stream);
+                                byte[] imageData = client.DownloadData(uri);
+                                using MemoryStream stream = new(imageData);
+                                
+                                    Image image = Image.FromStream(stream);
 
-                                        pictureBox1.Image = image;
-                                        pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-                                        pictureBox1.BackColor = Color.White;
-                                        panel3.BackColor = Color.White;
-                                    }
-                                }
-                                catch (Exception ex)
-                                {
-                                    Console.WriteLine($"Ошибка загрузки изображения: {ex.Message}");
-                                }
+                                    pictureBox1.Image = image;
+                                    pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                                    pictureBox1.BackColor = Color.White;
+                                    panel3.BackColor = Color.White;
+                                
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"Ошибка загрузки изображения: {ex.Message}");
                             }
                         }
                     }
@@ -148,15 +151,15 @@ namespace Project_AP
 
         private void UsersLabel_Click(object sender, EventArgs e)
         {
-            openNewForm();
+            OpenNewForm();
         }
 
         private void StorageLabel_Click(object sender, EventArgs e)
         {
-            openNewForm();
+            OpenNewForm();
         }
 
-        private void openNewForm()
+        private static void OpenNewForm()
         {
             ///
         }
@@ -169,7 +172,7 @@ namespace Project_AP
             //}
         }
 
-        private void panel2_Click(object sender, EventArgs e)
+        private void Panel2_Click(object sender, EventArgs e)
         {
             this.Close();
             DialogResult = DialogResult.OK;

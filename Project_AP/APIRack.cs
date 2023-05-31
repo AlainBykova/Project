@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Project_AP;
 
 namespace Project_AP
 {
@@ -21,74 +22,51 @@ namespace Project_AP
             this.apiUrl = apiUrl;
             this.authorizationToken = authorizationToken;
         }
-
-        public async Task<List<Rack>> GetRackInfoApi(int loc_id)
+        // Получить данные о rack через id location
+        public async Task<List<Rack>> GetRackInfoUsingLocationIdApi(int loc_id)
         {
-            // Set the authorization header
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
-
-            // Make the API request to retrieve all users
             HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
 
-            // Check if the request was successful
+            // Проверка успешного запрока апи
             if (response.IsSuccessStatusCode)
             {
-                // Read the response content
                 string responseBody = await response.Content.ReadAsStringAsync();
-
-                // Parse the response and extract the list of users
-                List<Rack> allLocations = ParseRackResponse(responseBody);
-
-                // Filter the users based on the search string
+                List<Rack> allLocations = ParseResponseRack.InfoRack(responseBody);
+                // Фильтры
                 List<Rack> filteredLocations = allLocations.FindAll(rack => (rack.Location == loc_id));
-
                 return filteredLocations;
             }
             else
             {
-                // Handle the case when the API request fails
                 throw new Exception($"API request failed with status code: {response.StatusCode}");
             }
         }
 
-        private static List<Rack> ParseRackResponse(string responseBody)
+        // Получить данные о rack по его id
+        public async Task<Rack> GetRackByIdApi(int rack_id)
         {
-            var settings = new JsonSerializerSettings
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
+            HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
+
+            // Проверка на успешный запрос апи
+            if (response.IsSuccessStatusCode)
             {
-                NullValueHandling = NullValueHandling.Include,
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
-            dynamic responseJson = JsonConvert.DeserializeObject(responseBody, settings);
-
-            List<Rack> racks = new();
-
-            foreach (dynamic locJson in responseJson)
-            {
-                int location = locJson.location;
-                int width = locJson.width;
-                int height = locJson.height;
-                int x = locJson.x;
-                int y = locJson.y;
-                int id = locJson.id;
-
-                Rack rack = new()
-                {
-                    Location = location,
-                    X = x,
-                    Y = y,
-                    Width = width,
-                    Height = height,
-                    Id = id,
-                };
-
-                racks.Add(rack);
+                string responseBody = await response.Content.ReadAsStringAsync();
+                List<Rack> allRacks = ParseResponseRack.InfoRack(responseBody);
+                // Фильтр
+                Rack rack = allRacks.SingleOrDefault(rack => (rack.Id == rack_id));
+                return rack;
             }
+            else
+            {
+                throw new Exception($"API request failed with status code: {response.StatusCode}");
 
-            return racks;
+            }
         }
     }
 
-
+    // Описание класса
     public class Rack
     {
         public int Location { get; set; }

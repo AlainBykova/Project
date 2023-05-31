@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Project_AP;
 
 namespace Project_AP
 {
@@ -21,114 +22,51 @@ namespace Project_AP
                 this.authorizationToken = authorizationToken;
             }
 
+            // весь список локации (для поиска)
             public async Task<List<Location>> GetLocationInfoApi(string searchString)
             {
-                // Set the authorization header
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
-
-                // Make the API request to retrieve all users
                 HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
 
-                // Check if the request was successful
+                // проверка на успешный запрос апи
                 if (response.IsSuccessStatusCode)
                 {
-                    // Read the response content
                     string responseBody = await response.Content.ReadAsStringAsync();
+                    List<Location> allLocations = ParseResponseLocation.InfoLocation(responseBody);
 
-                    // Parse the response and extract the list of users
-                    List<Location> allLocations = ParseLocationResponse(responseBody);
-
-                    // Filter the users based on the search string
+                    // фильтры
                     List<Location> filteredLocations = allLocations.FindAll(location => (location.Name.Contains(searchString)));
-
                     return filteredLocations;
                 }
                 else
                 {
-                    // Handle the case when the API request fails
                     throw new Exception($"API request failed with status code: {response.StatusCode}");
                 }
             }
 
-            private static List<Location> ParseLocationResponse(string responseBody)
+
+        public async Task<Location> GetLocationByIdApi(int loc_id)
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
+            HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
+
+            // проверка на успешный запрос апи
+            if (response.IsSuccessStatusCode)
             {
-                var settings = new JsonSerializerSettings
-                {
-                    NullValueHandling = NullValueHandling.Include,
-                    MissingMemberHandling = MissingMemberHandling.Ignore
-                };
-                dynamic responseJson = JsonConvert.DeserializeObject(responseBody, settings);
+                string responseBody = await response.Content.ReadAsStringAsync();
+                List<Location> allLocation = ParseResponseLocation.InfoLocation(responseBody);
 
-                List<Location> locations = new();
-
-                foreach (dynamic locJson in responseJson)
-                {
-                    string name = locJson.name;
-                    int width = locJson.width;
-                    int height = locJson.height;
-                    string created = locJson.created;
-                    int id = locJson.id;
-
-                    Location location = new()
-                    {
-                        Name = name,
-                        Created = created,
-                        Width = width,
-                        Height = height,
-                        Id = id,
-                    };
-
-                    locations.Add(location);
-                }
-
-                return locations;
+                // фильтры
+                Location location = allLocation.SingleOrDefault(location => (location.Id == loc_id));
+                return location;
             }
-
-            public async Task<Location> GetLocationByIdApi()
+            else
             {
-                // Set the authorization header
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
-
-                // Make the API request to retrieve all users
-                HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
-
-                // Check if the request was successful
-                if (response.IsSuccessStatusCode)
-                {
-                    string responseBody = await response.Content.ReadAsStringAsync();
-                    var settings = new JsonSerializerSettings
-                    {
-                        NullValueHandling = NullValueHandling.Ignore,
-                        MissingMemberHandling = MissingMemberHandling.Ignore
-                    };
-                    dynamic locJson = JsonConvert.DeserializeObject(responseBody, settings);
-
-                    string name = locJson.name;
-                    int width = locJson.width;
-                    int height = locJson.height;
-                    string created = locJson.created;
-                    int id = locJson.id;
-
-                    Location location = new()
-                    {
-                        Name = name,
-                        Created = created,
-                        Width = width,
-                        Height = height,
-                        Id = id,
-                    };
-
-                    return location;
-                }
-                else
-                {
-                    // Handle the case when the API request fails
-                    throw new Exception($"API request failed with status code: {response.StatusCode}");
-
-                }
+                throw new Exception($"API request failed with status code: {response.StatusCode}");
             }
         }
-
+    }
+    // описание класса
         public class Location
         {
             public string Name { get; set; }
