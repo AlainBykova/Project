@@ -137,16 +137,14 @@ namespace Project_AP
         private void DetailsButton_Click(object sender, EventArgs e)
         {
             Button button = (Button)sender;
-            int user_id = (int)button.Tag;
+            int loc_id = (int)button.Tag;
 
             StorageForm newForm = new()
             {
                 Size = this.Size
             };
             this.Hide();
-            newForm.Tag = user_id;
-            newForm.LocWidth = 12;
-            newForm.LocHeight = 12;
+            newForm.Tag = loc_id;
             newForm.ShowDialog();
 
             if (newForm.DialogResult == DialogResult.OK)

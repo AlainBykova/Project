@@ -65,6 +65,32 @@ namespace Project_AP
                 throw new Exception($"API request failed with status code: {response.StatusCode}");
             }
         }
+        // Создание нового location
+        public async void CreateNewLocationApi(Location loc)
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
+            string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(loc);
+            var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await httpClient.PostAsync(apiUrl, content);
+            if(!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"API request failed with status code: {response.StatusCode}");
+            }
+        }
+       // Удаление через id
+       public async void DeleteLocationApi(int loc_id)
+        {
+            string url_del = apiUrl + loc_id;
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
+            HttpResponseMessage response = await httpClient.DeleteAsync(url_del);
+
+            // Проверка статуса ответа
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"API request failed with status code: {response.StatusCode}");
+            }
+        }
     }
     // описание класса
         public class Location

@@ -230,8 +230,7 @@ namespace Project_AP
                 NullValueHandling = NullValueHandling.Include,
                 MissingMemberHandling = MissingMemberHandling.Ignore
             };
-            dynamic responseJson = JsonConvert.DeserializeObject(responseBody, settings);
-
+            dynamic responseJson = JsonConvert.DeserializeObject<Request[]>(responseBody, settings);
             List<Request> requests = new();
 
             foreach (dynamic reqJson in responseJson)

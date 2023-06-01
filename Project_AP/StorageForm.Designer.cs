@@ -51,6 +51,8 @@
             label2 = new Label();
             label1 = new Label();
             panel2 = new Panel();
+            panel4 = new Panel();
+            label11 = new Label();
             panel1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
@@ -58,6 +60,7 @@
             tableLayoutPanel4.SuspendLayout();
             tableLayoutPanel5.SuspendLayout();
             tableLayoutPanel6.SuspendLayout();
+            panel2.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -176,6 +179,7 @@
             tableLayoutPanel4.Controls.Add(panel3, 1, 1);
             tableLayoutPanel4.Controls.Add(tableLayoutPanel5, 3, 2);
             tableLayoutPanel4.Controls.Add(panel2, 2, 2);
+            tableLayoutPanel4.Controls.Add(label11, 2, 1);
             tableLayoutPanel4.Dock = DockStyle.Fill;
             tableLayoutPanel4.Location = new Point(40, 67);
             tableLayoutPanel4.Margin = new Padding(0);
@@ -198,6 +202,7 @@
             panel3.Name = "panel3";
             panel3.Size = new Size(36, 18);
             panel3.TabIndex = 1;
+            panel3.Click += panel3_Click;
             // 
             // tableLayoutPanel5
             // 
@@ -218,21 +223,24 @@
             // 
             // flowLayoutPanel1
             // 
+            flowLayoutPanel1.AutoScroll = true;
             flowLayoutPanel1.BackColor = Color.White;
             flowLayoutPanel1.BorderStyle = BorderStyle.FixedSingle;
             flowLayoutPanel1.Dock = DockStyle.Fill;
+            flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel1.Location = new Point(3, 144);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
             flowLayoutPanel1.Size = new Size(276, 135);
             flowLayoutPanel1.TabIndex = 0;
+            flowLayoutPanel1.WrapContents = false;
             // 
             // tableLayoutPanel6
             // 
             tableLayoutPanel6.BackColor = Color.White;
             tableLayoutPanel6.ColumnCount = 3;
-            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
+            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333359F));
+            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333359F));
             tableLayoutPanel6.Controls.Add(label9, 2, 2);
             tableLayoutPanel6.Controls.Add(label8, 1, 2);
             tableLayoutPanel6.Controls.Add(label7, 0, 2);
@@ -246,8 +254,8 @@
             tableLayoutPanel6.Location = new Point(3, 3);
             tableLayoutPanel6.Name = "tableLayoutPanel6";
             tableLayoutPanel6.RowCount = 3;
-            tableLayoutPanel6.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
-            tableLayoutPanel6.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel6.RowStyles.Add(new RowStyle(SizeType.Percent, 33.33334F));
+            tableLayoutPanel6.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333359F));
             tableLayoutPanel6.RowStyles.Add(new RowStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel6.Size = new Size(276, 135);
             tableLayoutPanel6.TabIndex = 1;
@@ -256,109 +264,179 @@
             // 
             label9.AutoSize = true;
             label9.Dock = DockStyle.Fill;
-            label9.Location = new Point(187, 90);
+            label9.FlatStyle = FlatStyle.Flat;
+            label9.Location = new Point(186, 93);
+            label9.Margin = new Padding(3);
             label9.Name = "label9";
-            label9.Size = new Size(86, 45);
+            label9.Size = new Size(87, 39);
             label9.TabIndex = 8;
             label9.Text = "9";
             label9.TextAlign = ContentAlignment.MiddleCenter;
+            label9.Click += label1_Click;
+            label9.MouseEnter += label1_MouseEnter;
+            label9.MouseLeave += label1_MouseLeave;
             // 
             // label8
             // 
             label8.AutoSize = true;
             label8.Dock = DockStyle.Fill;
-            label8.Location = new Point(95, 90);
+            label8.FlatStyle = FlatStyle.Flat;
+            label8.Location = new Point(94, 93);
+            label8.Margin = new Padding(3);
             label8.Name = "label8";
-            label8.Size = new Size(86, 45);
+            label8.Size = new Size(86, 39);
             label8.TabIndex = 7;
             label8.Text = "8";
             label8.TextAlign = ContentAlignment.MiddleCenter;
+            label8.Click += label1_Click;
+            label8.MouseEnter += label1_MouseEnter;
+            label8.MouseLeave += label1_MouseLeave;
             // 
             // label7
             // 
             label7.AutoSize = true;
             label7.Dock = DockStyle.Fill;
-            label7.Location = new Point(3, 90);
+            label7.FlatStyle = FlatStyle.Flat;
+            label7.Location = new Point(3, 93);
+            label7.Margin = new Padding(3);
             label7.Name = "label7";
-            label7.Size = new Size(86, 45);
+            label7.Size = new Size(85, 39);
             label7.TabIndex = 6;
             label7.Text = "7";
             label7.TextAlign = ContentAlignment.MiddleCenter;
+            label7.Click += label1_Click;
+            label7.MouseEnter += label1_MouseEnter;
+            label7.MouseLeave += label1_MouseLeave;
             // 
             // label6
             // 
             label6.AutoSize = true;
             label6.Dock = DockStyle.Fill;
-            label6.Location = new Point(187, 45);
+            label6.FlatStyle = FlatStyle.Flat;
+            label6.Location = new Point(186, 48);
+            label6.Margin = new Padding(3);
             label6.Name = "label6";
-            label6.Size = new Size(86, 45);
+            label6.Size = new Size(87, 39);
             label6.TabIndex = 5;
             label6.Text = "6";
             label6.TextAlign = ContentAlignment.MiddleCenter;
+            label6.Click += label1_Click;
+            label6.MouseEnter += label1_MouseEnter;
+            label6.MouseLeave += label1_MouseLeave;
             // 
             // label5
             // 
             label5.AutoSize = true;
             label5.Dock = DockStyle.Fill;
-            label5.Location = new Point(95, 45);
+            label5.FlatStyle = FlatStyle.Flat;
+            label5.Location = new Point(94, 48);
+            label5.Margin = new Padding(3);
             label5.Name = "label5";
-            label5.Size = new Size(86, 45);
+            label5.Size = new Size(86, 39);
             label5.TabIndex = 4;
             label5.Text = "5";
             label5.TextAlign = ContentAlignment.MiddleCenter;
+            label5.Click += label1_Click;
+            label5.MouseEnter += label1_MouseEnter;
+            label5.MouseLeave += label1_MouseLeave;
             // 
             // label4
             // 
             label4.AutoSize = true;
             label4.Dock = DockStyle.Fill;
-            label4.Location = new Point(3, 45);
+            label4.FlatStyle = FlatStyle.Flat;
+            label4.Location = new Point(3, 48);
+            label4.Margin = new Padding(3);
             label4.Name = "label4";
-            label4.Size = new Size(86, 45);
+            label4.Size = new Size(85, 39);
             label4.TabIndex = 3;
             label4.Text = "4";
             label4.TextAlign = ContentAlignment.MiddleCenter;
+            label4.Click += label1_Click;
+            label4.MouseEnter += label1_MouseEnter;
+            label4.MouseLeave += label1_MouseLeave;
             // 
             // label3
             // 
             label3.AutoSize = true;
             label3.Dock = DockStyle.Fill;
-            label3.Location = new Point(187, 0);
+            label3.FlatStyle = FlatStyle.Flat;
+            label3.Location = new Point(186, 3);
+            label3.Margin = new Padding(3);
             label3.Name = "label3";
-            label3.Size = new Size(86, 45);
+            label3.Size = new Size(87, 39);
             label3.TabIndex = 2;
             label3.Text = "3";
             label3.TextAlign = ContentAlignment.MiddleCenter;
+            label3.Click += label1_Click;
+            label3.MouseEnter += label1_MouseEnter;
+            label3.MouseLeave += label1_MouseLeave;
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Dock = DockStyle.Fill;
-            label2.Location = new Point(95, 0);
+            label2.FlatStyle = FlatStyle.Flat;
+            label2.Location = new Point(94, 3);
+            label2.Margin = new Padding(3);
             label2.Name = "label2";
-            label2.Size = new Size(86, 45);
+            label2.Size = new Size(86, 39);
             label2.TabIndex = 1;
             label2.Text = "2";
             label2.TextAlign = ContentAlignment.MiddleCenter;
+            label2.Click += label1_Click;
+            label2.MouseEnter += label1_MouseEnter;
+            label2.MouseLeave += label1_MouseLeave;
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Dock = DockStyle.Fill;
-            label1.Location = new Point(3, 0);
+            label1.FlatStyle = FlatStyle.Flat;
+            label1.Location = new Point(3, 3);
+            label1.Margin = new Padding(3);
             label1.Name = "label1";
-            label1.Size = new Size(86, 45);
+            label1.Size = new Size(85, 39);
             label1.TabIndex = 0;
             label1.Text = "1";
             label1.TextAlign = ContentAlignment.MiddleCenter;
+            label1.Click += label1_Click;
+            label1.MouseEnter += label1_MouseEnter;
+            label1.MouseLeave += label1_MouseLeave;
             // 
             // panel2
             // 
             panel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel2.BackColor = Color.FromArgb(215, 214, 255);
             panel2.BorderStyle = BorderStyle.FixedSingle;
+            panel2.Controls.Add(panel4);
             panel2.Location = new Point(57, 39);
+            panel2.Margin = new Padding(3, 3, 10, 3);
             panel2.Name = "panel2";
-            panel2.Size = new Size(354, 282);
+            panel2.Size = new Size(347, 282);
             panel2.TabIndex = 0;
+            // 
+            // panel4
+            // 
+            panel4.BackColor = Color.White;
+            panel4.BorderStyle = BorderStyle.FixedSingle;
+            panel4.Location = new Point(68, 74);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(221, 114);
+            panel4.TabIndex = 0;
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Dock = DockStyle.Fill;
+            label11.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label11.ImageAlign = ContentAlignment.TopCenter;
+            label11.Location = new Point(57, 18);
+            label11.Name = "label11";
+            label11.Size = new Size(354, 18);
+            label11.TabIndex = 3;
+            label11.Text = "label11";
+            label11.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // StorageForm
             // 
@@ -376,9 +454,11 @@
             tableLayoutPanel2.ResumeLayout(false);
             tableLayoutPanel3.ResumeLayout(false);
             tableLayoutPanel4.ResumeLayout(false);
+            tableLayoutPanel4.PerformLayout();
             tableLayoutPanel5.ResumeLayout(false);
             tableLayoutPanel6.ResumeLayout(false);
             tableLayoutPanel6.PerformLayout();
+            panel2.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -406,5 +486,7 @@
         private Label label3;
         private Label label2;
         private Label label1;
+        private Label label11;
+        private Panel panel4;
     }
 }
