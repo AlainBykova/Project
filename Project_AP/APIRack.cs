@@ -64,6 +64,37 @@ namespace Project_AP
 
             }
         }
+        // Создать новый rack и вернуть его id
+        public async Task<int> CreateNewRackApi(Rack rack)
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
+            string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(rack);
+            var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await httpClient.PostAsync(apiUrl, content);
+            if (response.IsSuccessStatusCode)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                return ParseResponseRack.OnlyIdRack(responseBody);
+            }
+            else
+            {
+                throw new Exception($"API request failed with status code: {response.StatusCode}");
+            }
+        }
+        // Удалить rack по его id
+        public async void DeleteRackApi(int rack_id)
+        {
+            string url_del = apiUrl + "/" + rack_id;
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
+            HttpResponseMessage response = await httpClient.DeleteAsync(url_del);
+
+            // Проверка статуса ответа
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"API request failed with status code: {response.StatusCode}");
+            }
+        }
     }
 
     // Описание класса

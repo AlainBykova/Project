@@ -65,15 +65,20 @@ namespace Project_AP
                 throw new Exception($"API request failed with status code: {response.StatusCode}");
             }
         }
-        // Создание нового location
-        public async void CreateNewLocationApi(Location loc)
+        // Создание нового location и возврат его id
+        public async Task<int> CreateNewLocationApi(Location loc)
         {
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
             string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(loc);
             var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
             HttpResponseMessage response = await httpClient.PostAsync(apiUrl, content);
-            if(!response.IsSuccessStatusCode)
+            if(response.IsSuccessStatusCode)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                return ParseResponseLocation.OnlyIdLocation(responseBody);
+            }
+            else
             {
                 throw new Exception($"API request failed with status code: {response.StatusCode}");
             }
@@ -81,7 +86,7 @@ namespace Project_AP
        // Удаление через id
        public async void DeleteLocationApi(int loc_id)
         {
-            string url_del = apiUrl + loc_id;
+            string url_del = apiUrl + "/" + loc_id;
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
             HttpResponseMessage response = await httpClient.DeleteAsync(url_del);
 

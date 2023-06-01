@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Project_AP;
@@ -54,6 +56,37 @@ namespace Project_AP
                 return hardware;
             }
             catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
+            return null;
+        }
+        // поиск конкретного оборудования по id stock
+        public async Task<List<Hardware>> GetHardwareByRackIdApi(int rack_id)
+        {
+            string apiUrl = "https://helow19274.ru/aip/api/hardware";
+            string apiUrl1 = "https://helow19274.ru/aip/api/stocks";
+
+            string authorizationToken = "5RNYBdLduTDxQCcM8YYrb5nA:H4dScAyGbS89KgLgZBs2vPsk";
+
+            HardwareService hardwareService = new(apiUrl, authorizationToken);
+            StockService stockService = new(apiUrl1, authorizationToken);
+            
+            // Проверка успешного запроса апи
+            try
+            {
+                //Rack rack = await rackService.GetRackByIdApi(rack_id);
+                List<Stock> stocks = await stockService.GetStockInfoUsingRackIdApi(rack_id);
+                List<Hardware> allHardware = new();
+                foreach(Stock item in stocks)
+                {
+                    Hardware hardware = await hardwareService.GetHardwareNameByIdApi(item.Hardware);
+                    hardware.Count = item.Count;
+                    allHardware.Add(hardware);
+                }
+                return allHardware;
+            }
+            catch(Exception ex)
             {
                 MessageBox.Show($"An error occurred: {ex.Message}");
             }

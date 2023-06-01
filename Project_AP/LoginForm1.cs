@@ -26,6 +26,7 @@ namespace Project_AP
             int screenHeight = screen.Bounds.Height;
 
             this.Size = new Size(screenWidth, screenHeight);
+            this.WindowState = FormWindowState.Maximized;
 
         }
 

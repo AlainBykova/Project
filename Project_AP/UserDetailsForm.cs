@@ -19,6 +19,7 @@ namespace Project_AP
         public UserDetailsForm()
         {
             InitializeComponent();
+            this.WindowState = FormWindowState.Maximized;
         }
         private void UserDetailsForm_Paint(object sender, PaintEventArgs e)
         {

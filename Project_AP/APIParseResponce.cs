@@ -74,6 +74,19 @@ namespace Project_AP
             }
             return hardwares;
         }
+        // Возвращает только информацию про id
+        public static int OnlyIdHardware(string responseBody)
+        {
+            var settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Include,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+            dynamic responseJson = JsonConvert.DeserializeObject(responseBody, settings);
+            int id = responseJson.id;
+
+            return id;
+        }
     }
     // для location
     internal class ParseResponseLocation
@@ -111,10 +124,24 @@ namespace Project_AP
 
             return locations;
         }
+        // для возврата одного лишь id
+        public static int OnlyIdLocation(string responseBody)
+        {
+            var settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Include,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+            dynamic responseJson = JsonConvert.DeserializeObject(responseBody, settings);
+            int id = responseJson.id;
+
+            return id;
+        }
     }
     // для rack
     internal class ParseResponseRack
     {
+        // для списка
         public static List<Rack> InfoRack(string responseBody)
         {
             var settings = new JsonSerializerSettings
@@ -148,10 +175,24 @@ namespace Project_AP
             }
             return racks;
         }
+        // для возврата одного id
+        public static int OnlyIdRack(string responseBody)
+        {
+            var settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Include,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+            dynamic responseJson = JsonConvert.DeserializeObject(responseBody, settings);
+            int id = responseJson.id;
+
+            return id;
+        }
     }
     // для Stock
     internal class ParseResponseStock
     {
+        // Для всего списка
         public static List<Stock> InfoStock(string responseBody)
         {
             var settings = new JsonSerializerSettings
@@ -182,6 +223,19 @@ namespace Project_AP
                 stocks.Add(stock);
             }
             return stocks;
+        }
+        // Возвращает только информацию про id
+        public static int OnlyIdStock(string responseBody)
+        {
+            var settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Include,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+            dynamic responseJson = JsonConvert.DeserializeObject(responseBody, settings);
+            int id = responseJson.id;
+
+            return id;
         }
     }
     // для пользователей

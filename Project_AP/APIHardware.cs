@@ -64,6 +64,58 @@ namespace Project_AP
                 throw new Exception($"API request failed with status code: {response.StatusCode}");
             }
         }
+        // поиск конкретного оборудования по его id (укороченная версия)
+        public async Task<Hardware> GetHardwareNameByIdApi(int hardware_id)
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
+            HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
+
+            // Проверка успешного запроса апи
+            if (response.IsSuccessStatusCode)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                List<Hardware> allHardware = ParseResponseHardware.InfoAllHardware(responseBody);
+
+                // фильтр
+                Hardware hardware = allHardware.SingleOrDefault(hardware => (hardware.Id == hardware_id));
+                return hardware;
+            }
+            else
+            {
+                throw new Exception($"API request failed with status code: {response.StatusCode}");
+            }
+        }
+        // Создание нового hardware и возврат его id
+        public async Task<int> CreateNewLocationApi(Hardware hard)
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
+            string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(hard);
+            var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await httpClient.PostAsync(apiUrl, content);
+            if (response.IsSuccessStatusCode)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                return ParseResponseHardware.OnlyIdHardware(responseBody);
+            }
+            else
+            {
+                throw new Exception($"API request failed with status code: {response.StatusCode}");
+            }
+        }
+        // Удаление через id
+        public async void DeleteHardwareApi(int hard_id)
+        {
+            string url_del = apiUrl + "/" + hard_id;
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
+            HttpResponseMessage response = await httpClient.DeleteAsync(url_del);
+
+            // Проверка статуса ответа
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"API request failed with status code: {response.StatusCode}");
+            }
+        }
     }
 
     // описание класса

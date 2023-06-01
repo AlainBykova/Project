@@ -24,6 +24,7 @@ namespace Project_AP
 
             tableLayoutPanel5.BorderStyle = BorderStyle.FixedSingle;
             tableLayoutPanel5.CellBorderStyle = TableLayoutPanelCellBorderStyle.None;
+            this.WindowState = FormWindowState.Maximized;
         }
 
         private void UsersListForm_FormClosed(object sender, FormClosedEventArgs e)

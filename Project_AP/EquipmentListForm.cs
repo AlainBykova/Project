@@ -17,6 +17,7 @@ namespace Project_AP
             InitializeComponent();
             tableLayoutPanel5.BorderStyle = BorderStyle.FixedSingle;
             tableLayoutPanel5.CellBorderStyle = TableLayoutPanelCellBorderStyle.None;
+            this.WindowState = FormWindowState.Maximized;
         }
 
         private void EquipmentListForm_FormClosed(object sender, FormClosedEventArgs e)

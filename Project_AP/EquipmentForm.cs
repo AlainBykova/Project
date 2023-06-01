@@ -16,6 +16,7 @@ namespace Project_AP
         public EquipmentForm()
         {
             InitializeComponent();
+            this.WindowState = FormWindowState.Maximized;
         }
         private void EquipmentForm_Paint(object sender, PaintEventArgs e)
         {
