@@ -246,6 +246,7 @@
             SearchTextBox.Size = new Size(447, 40);
             SearchTextBox.TabIndex = 1;
             SearchTextBox.WordWrap = false;
+            SearchTextBox.KeyDown += SearchTextBox_KeyDown;
             // 
             // AddButton
             // 

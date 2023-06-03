@@ -53,10 +53,8 @@ namespace Project_AP
             if (response.IsSuccessStatusCode)
             {
                 string responseBody = await response.Content.ReadAsStringAsync();
-                List<Hardware> allHardware = ParseResponseHardware.InfoHardware(responseBody);
-
-                // фильтр
-                Hardware hardware = allHardware.SingleOrDefault(hardware => (hardware.Id == hardware_id));
+                Hardware hardware = ParseResponseHardware.InfoHardware(responseBody, hardware_id);
+                
                 return hardware;
             }
             else
@@ -75,7 +73,7 @@ namespace Project_AP
             {
                 string responseBody = await response.Content.ReadAsStringAsync();
                 List<Hardware> allHardware = ParseResponseHardware.InfoAllHardware(responseBody);
-
+                 
                 // фильтр
                 Hardware hardware = allHardware.SingleOrDefault(hardware => (hardware.Id == hardware_id));
                 return hardware;
@@ -86,7 +84,7 @@ namespace Project_AP
             }
         }
         // Создание нового hardware и возврат его id
-        public async Task<int> CreateNewLocationApi(Hardware hard)
+        public async Task<int> CreateNewHardwareApi(Hardware hard)
         {
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
             string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(hard);
@@ -127,7 +125,7 @@ namespace Project_AP
         public string Image_link { get; set; }
         public int Id { get; set; }
         public string Created { get; set; }
-        public List<string> Specifications { get; set; }
+        public Dictionary<string, int> Specifications { get; set; }
         public int Location { get; set; }
         public int Location_Name { get; set; }
         public int Location_Width { get; set; }

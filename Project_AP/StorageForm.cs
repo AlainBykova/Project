@@ -141,6 +141,9 @@ namespace Project_AP
                         rackPanel.Location = new(property[0], property[1]);
                         rackPanel.Click += RackPanel_Click;
 
+                        ToolTip toolTip = new ToolTip();
+                        toolTip.SetToolTip(rackPanel, $"Стеллаж: {rack.Id} ({rack.Width}x{rack.Height}см)");
+
                         panel4.Controls.Add(rackPanel);
                     }
                 }
@@ -190,11 +193,13 @@ namespace Project_AP
                         BorderStyle = BorderStyle.FixedSingle,
                         Size = new Size(width, height),
                         Location = new Point((flowLayoutPanel1.Width - width) / 2, height),
+                        Tag = item.Id
                     };
+                    oneHardware.Click += oneHardwarePanel_Click;
 
                     Label nameLabel = new()
                     {
-                        Text = item.Name +"  (" + item.Count + ")",
+                        Text = item.Name + "  (" + item.Count + ")",
                         Margin = new Padding(5),
                         TextAlign = ContentAlignment.MiddleCenter,
                         Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point),
@@ -206,28 +211,51 @@ namespace Project_AP
                 }
             }
         }
+        private void oneHardwarePanel_Click(object sender, EventArgs e)
+        {
+            Panel panel = (Panel)sender;
+            EquipmentForm newForm = new()
+            {
+                Size = this.Size
+            };
+            this.Hide();
+            newForm.Tag = (int)panel.Tag;
+            newForm.ShowDialog();
 
+            if (newForm.DialogResult == DialogResult.OK)
+            {
+                this.Show();
+            }
+        }
+        bool flag = false;
         private void label1_MouseEnter(object sender, EventArgs e)
         {
             Label label = (Label)sender;
-            label.BackColor = Color.FromArgb(172, 171, 221);
+            if(flag == false)
+            {
+                label.BackColor = Color.FromArgb(172, 171, 221);
+            }
         }
-
         private void label1_MouseLeave(object sender, EventArgs e)
         {
             Label label = (Label)sender;
-            label.BackColor = Color.White;
+            if(flag == false)
+            {
+                label.BackColor = Color.White;
+            }
         }
         private void label1_Click(object sender, EventArgs e)
         {
             Label label = (Label)sender;
-            if (label.BackColor == Color.White)
+            if (flag == false)
             {
                 label.BackColor = Color.FromArgb(255, 122, 114);
+                flag = true;
             }
             else
             {
                 label.BackColor = Color.White;
+                flag = false;
             }
             //int rack_position = label.Tag;
         }

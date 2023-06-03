@@ -29,16 +29,12 @@ namespace Project_AP
             if (Tag != null)
             {
                 int hardware_id = (int)Tag;
-
-                //string apiUrl = "https://helow19274.ru/aip/api/hardware";
-                //string authorizationToken = "5RNYBdLduTDxQCcM8YYrb5nA:H4dScAyGbS89KgLgZBs2vPsk";
-                //HardwareService hardwareService = new(apiUrl, authorizationToken);
                 API api = new API();
                 try
                 {
                     Hardware hardware = await api.GetAllInfoHardware(hardware_id);
                     int height = (int)(flowLayoutPanel1.Height / 6);
-                    for (int i = 1; i < 5; i++)
+                    for (int i = 1; i < 4; i++)
                     {
                         Panel panel = new()
                         {
@@ -75,17 +71,60 @@ namespace Project_AP
                                 }
                                 label.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
                                 break;
-                            case 4:
-                                label.Text = hardware.Rack + " " + hardware.Stock + " " + hardware.Location;
-                                label.Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point);
-                                label.ForeColor = Color.FromArgb(143, 142, 191);
-                                break;
                         }
+                        
                         panel.Controls.Add(label);
 
+                        
                         flowLayoutPanel1.Controls.Add(panel);
 
                     }
+                    Button specificationButton = new()
+                    {
+                            FlatStyle = FlatStyle.Flat,
+                            BackColor = Color.FromArgb(143, 142, 191),
+                            Text = "Спецификация",
+                            Size = new Size(flowLayoutPanel1.Width, height),
+                    };
+                    specificationButton.Click += (sender, e) =>
+                    {
+                        Form popupForm = new Form();
+                        popupForm.Size = new System.Drawing.Size(450, 450);
+                        popupForm.ShowIcon = false;
+                        List<string> specificationItems = new List<string>();
+                        if(hardware.Specifications != null)
+                        {
+                            foreach (KeyValuePair<string, int> pair in hardware.Specifications)
+                            {
+                            string key = pair.Key;
+                            int value = pair.Value;
+                            specificationItems.Add($"{key}: {value}");
+                            }
+                        }
+                        else
+                        {
+                            specificationItems.Add("Созданной спецификации: 0");
+                        }
+                        
+                        ListBox listBox = new ListBox();
+                        listBox.Items.AddRange(specificationItems.ToArray());
+                        listBox.Dock = DockStyle.Fill;
+
+                        popupForm.Controls.Add(listBox);
+
+                        // Отображение выплывающей формы над кнопкой
+                        popupForm.StartPosition = FormStartPosition.Manual;
+                        int screenWidth = Screen.PrimaryScreen.Bounds.Width;
+                        int screenHeight = Screen.PrimaryScreen.Bounds.Height;
+                        int popupLeft = (screenWidth - popupForm.Width) / 2;
+                        int popupTop = (screenHeight - popupForm.Height) / 2;
+
+                        // Установка координат для расположения посередине экрана
+                        popupForm.Left = popupLeft;
+                        popupForm.Top = popupTop;
+                        popupForm.Show();
+                    };
+                    flowLayoutPanel1.Controls.Add(specificationButton);
 
                     if (!string.IsNullOrEmpty(hardware.Image_link))
                     {
@@ -122,6 +161,7 @@ namespace Project_AP
             }
 
         }
+
         private void UsersLabel_MouseEnter(object sender, EventArgs e)
         {
             Label UsersLabel = (Label)sender;

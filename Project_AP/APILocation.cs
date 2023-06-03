@@ -9,40 +9,40 @@ using Project_AP;
 
 namespace Project_AP
 {
-        public class LocationService
+    public class LocationService
+    {
+        private readonly HttpClient httpClient;
+        private readonly string apiUrl;
+        private readonly string authorizationToken;
+
+        public LocationService(string apiUrl, string authorizationToken)
         {
-            private readonly HttpClient httpClient;
-            private readonly string apiUrl;
-            private readonly string authorizationToken;
+            httpClient = new HttpClient();
+            this.apiUrl = apiUrl;
+            this.authorizationToken = authorizationToken;
+        }
 
-            public LocationService(string apiUrl, string authorizationToken)
+        // весь список локации (для поиска)
+        public async Task<List<Location>> GetLocationInfoApi(string searchString)
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
+            HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
+
+            // проверка на успешный запрос апи
+            if (response.IsSuccessStatusCode)
             {
-                httpClient = new HttpClient();
-                this.apiUrl = apiUrl;
-                this.authorizationToken = authorizationToken;
-            }
+                string responseBody = await response.Content.ReadAsStringAsync();
+                List<Location> allLocations = ParseResponseLocation.InfoLocation(responseBody);
 
-            // весь список локации (для поиска)
-            public async Task<List<Location>> GetLocationInfoApi(string searchString)
+                // фильтры
+                List<Location> filteredLocations = allLocations.FindAll(location => (location.Name.Contains(searchString)));
+                return filteredLocations;
+            }
+            else
             {
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
-                HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
-
-                // проверка на успешный запрос апи
-                if (response.IsSuccessStatusCode)
-                {
-                    string responseBody = await response.Content.ReadAsStringAsync();
-                    List<Location> allLocations = ParseResponseLocation.InfoLocation(responseBody);
-
-                    // фильтры
-                    List<Location> filteredLocations = allLocations.FindAll(location => (location.Name.Contains(searchString)));
-                    return filteredLocations;
-                }
-                else
-                {
-                    throw new Exception($"API request failed with status code: {response.StatusCode}");
-                }
+                throw new Exception($"API request failed with status code: {response.StatusCode}");
             }
+        }
 
 
         public async Task<Location> GetLocationByIdApi(int loc_id)
@@ -66,14 +66,19 @@ namespace Project_AP
             }
         }
         // Создание нового location и возврат его id
-        public async Task<int> CreateNewLocationApi(Location loc)
+        public async Task<int> CreateNewLocationApi(Location location)
         {
+            loc iWannaSleep = new() {
+                name = location.Name,
+                height = location.Height,
+                width = location.Width,
+            };
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
-            string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(loc);
+            string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(iWannaSleep);
             var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
             HttpResponseMessage response = await httpClient.PostAsync(apiUrl, content);
-            if(response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
                 string responseBody = await response.Content.ReadAsStringAsync();
                 return ParseResponseLocation.OnlyIdLocation(responseBody);
@@ -83,8 +88,8 @@ namespace Project_AP
                 throw new Exception($"API request failed with status code: {response.StatusCode}");
             }
         }
-       // Удаление через id
-       public async void DeleteLocationApi(int loc_id)
+        // Удаление через id
+        public async void DeleteLocationApi(int loc_id)
         {
             string url_del = apiUrl + "/" + loc_id;
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
@@ -98,13 +103,19 @@ namespace Project_AP
         }
     }
     // описание класса
-        public class Location
-        {
-            public string Name { get; set; }
-            public int Width { get; set; }
-            public int Height { get; set; }
-            public int Id { get; set; }
-            public string Created { get; set; }
-        }
+    public class Location
+    {
+        public string Name { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public int Id { get; set; }
+        public string Created { get; set; }
     }
+    public class loc
+    {
+        public string name { get; set; }
+        public int width { get; set; }
+        public int height { get; set; }
+    }
+}
 

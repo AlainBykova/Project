@@ -76,7 +76,7 @@ namespace Project_AP
                 List<Stock> allStocks = ParseResponseStock.InfoStock(responseBody);
 
                 // Фильтры
-                List<Stock> filteredStock = allStocks.FindAll(stock => (stock.Hardware == rack_id));
+                List<Stock> filteredStock = allStocks.FindAll(stock => (stock.Rack == rack_id));
                 return filteredStock;
             }
             else
@@ -84,11 +84,11 @@ namespace Project_AP
                 throw new Exception($"API request failed with status code: {response.StatusCode}");
             }
         }
-        // Создать новый rack и вернуть его id
-        public async Task<int> CreateNewStockApi(Rack rack)
+        // Создать новый stock и вернуть его id
+        public async Task<int> CreateNewStockApi(Stock stock)
         {
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
-            string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(rack);
+            string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(stock);
             var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
             HttpResponseMessage response = await httpClient.PostAsync(apiUrl, content);

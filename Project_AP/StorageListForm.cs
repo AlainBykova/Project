@@ -12,6 +12,9 @@ namespace Project_AP
 {
     public partial class StorageListForm : Form
     {
+        List<int> CheckBoxTag = new();
+        string apiUrl = "https://helow19274.ru/aip/api/location";
+        string authorizationToken = "5RNYBdLduTDxQCcM8YYrb5nA:H4dScAyGbS89KgLgZBs2vPsk";
         public StorageListForm()
         {
             InitializeComponent();
@@ -26,7 +29,6 @@ namespace Project_AP
                 Application.Exit();
             }
         }
-
         private void StorageListForm_Paint(object sender, PaintEventArgs e)
         {
             ControlPaint.DrawBorder(e.Graphics, ClientRectangle, Color.FromArgb(143, 142, 191), ButtonBorderStyle.Solid);
@@ -34,9 +36,6 @@ namespace Project_AP
         private async void SearchButton_Click(object sender, EventArgs e)
         {
             string searchQuery = SearchTextBox.Text;
-
-            string apiUrl = "https://helow19274.ru/aip/api/location";
-            string authorizationToken = "5RNYBdLduTDxQCcM8YYrb5nA:H4dScAyGbS89KgLgZBs2vPsk";
 
             LocationService locationService = new(apiUrl, authorizationToken);
 
@@ -64,12 +63,14 @@ namespace Project_AP
                         };
 
                         int checkWidth = (int)(height * 0.8);
-                        CheckBox checkBox = new()
+                        MyCheckBox checkBox = new()
                         {
-                            Size = new Size(checkWidth, checkWidth),
-                            Dock = DockStyle.Left
+                            //Size = new Size(checkWidth, checkWidth),
+                            Dock = DockStyle.Left,
+                            Tag = item.Id,
                         };
                         ManyLocations.Controls.Add(checkBox);
+                        checkBox.Click += CheckBox_Click;
 
                         int buttonWidth = (int)(width * 0.2);
                         Button detailsButton = new()
@@ -130,6 +131,7 @@ namespace Project_AP
                 MessageBox.Show($"An error occurred: {ex.Message}");
             }
         }
+
         private void SearchTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             SearchButton_Click(sender, e);
@@ -201,6 +203,66 @@ namespace Project_AP
             this.Hide();
             newForm.ShowDialog();
             this.Close();
+        }
+        private void CheckBox_Click(object sender, EventArgs e)
+        {
+            MyCheckBox cb = (MyCheckBox)sender;
+            int loc_id = (int)cb.Tag;
+            if (cb.Checked)
+            {
+                cb.ForeColor = Color.FromArgb(255, 122, 114);
+                CheckBoxTag.Add(loc_id);
+            }
+            else
+            {
+                cb.ForeColor = Color.White;
+                CheckBoxTag.Remove(loc_id);
+            }
+        }
+
+        private void DeleteButton_Click(object sender, EventArgs e)
+        {
+            if (CheckBoxTag.Count != 0)
+            {
+                foreach (int id in CheckBoxTag)
+                {
+                    LocationService loc = new(apiUrl, authorizationToken);
+                    loc.DeleteLocationApi(id);
+                }
+                CheckBoxTag.Clear();
+                LocationList.Controls.Clear();
+            }
+        }
+
+        private void AddButton_Click(object sender, EventArgs e)
+        {
+            AddStorageForm newForm = new()
+            {
+                Size = this.Size
+            };
+            this.Hide();
+            newForm.ShowDialog();
+            this.Close();
+        }
+    }
+    class MyCheckBox : CheckBox
+    {
+        public MyCheckBox()
+        {
+            this.TextAlign = ContentAlignment.MiddleRight;
+        }
+        public override bool AutoSize
+        {
+            get { return base.AutoSize; }
+            set { base.AutoSize = false; }
+        }
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            int h = this.ClientSize.Height - 2;
+            Rectangle rc = new Rectangle(new Point(0, 1), new Size(h, h));
+            ControlPaint.DrawCheckBox(e.Graphics, rc,
+                this.Checked ? ButtonState.Checked : ButtonState.Normal);
         }
     }
 }

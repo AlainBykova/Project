@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Project_AP;
 
 namespace Project_AP
@@ -26,12 +28,12 @@ namespace Project_AP
             foreach (dynamic hdJson in responseJson)
             {
                 string name = hdJson.name;
-                int id = hdJson.id;
+                int? id = hdJson.id as int?;
 
                 Hardware hardware = new()
                 {
                     Name = name,
-                    Id = id,
+                    Id = id ?? -1,
                 };
 
                 hardwares.Add(hardware);
@@ -40,39 +42,40 @@ namespace Project_AP
         }
 
         // парсинг информации о конкретном оборудовании (вся инфо об одном)
-        public static List<Hardware> InfoHardware(string responseBody)
+        public static Hardware InfoHardware(string responseBody, int hardware_id)
         {
-            var settings = new JsonSerializerSettings
+            Hardware hardware = new();
+            JArray jsonArray = JArray.Parse(responseBody);
+
+            foreach (JObject jsonObject in jsonArray)
             {
-                NullValueHandling = NullValueHandling.Include,
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
-            dynamic responseJson = JsonConvert.DeserializeObject(responseBody, settings);
-
-            List<Hardware> hardwares = new();
-
-            foreach (dynamic hdJson in responseJson)
-            {
-                string name = hdJson.name;
-                string description = hdJson.description;
-                string created = hdJson.created;
-                string image_link = hdJson.image_link;
-                int id = hdJson.id;
-                string type = hdJson.type;
-
-                Hardware hardware = new()
+                if ((int)jsonObject["id"] == hardware_id)
                 {
-                    Name = name,
-                    Created = created,
-                    Description = description,
-                    Type = type,
-                    Image_link = image_link,
-                    Id = id,
-                };
+                    hardware.Name = jsonObject["name"].ToString();
+                    hardware.Type = jsonObject["type"].ToString();
+                    hardware.Description = jsonObject["description"].ToString();
+                    hardware.Image_link = jsonObject["image_link"].ToString();
+                    hardware.Id = (int)jsonObject["id"];
+                    hardware.Created = jsonObject["created"].ToString();
 
-                hardwares.Add(hardware);
+                    JObject specificationObject = (JObject)jsonObject["specifications"];
+                    hardware.Specifications = new Dictionary<string, int>();
+                    if (specificationObject != null)
+                    {
+                        foreach (JProperty property in specificationObject.Properties())
+                        {
+                            string key = property.Name;
+                            int value = (int)property.Value;
+                            hardware.Specifications.Add(key, value);
+                        }
+                    }
+                    else
+                    {
+                        hardware.Specifications.Add("Созданной спецификации", 0);
+                    }
+                }
             }
-            return hardwares;
+            return hardware;
         }
         // Возвращает только информацию про id
         public static int OnlyIdHardware(string responseBody)

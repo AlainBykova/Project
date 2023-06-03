@@ -24,10 +24,10 @@ namespace Project_AP
             StockService stockService = new(apiUrl2, authorizationToken);
             RackService rackService = new(apiUrl3, authorizationToken);
             LocationService locationService = new(apiUrl4, authorizationToken);
-
+            Hardware hardware = new();
             try
             {
-                Hardware hardware = await hardwareService.GetHardwareByIdApi(hardware_id);
+                hardware = await hardwareService.GetHardwareByIdApi(hardware_id);
                 Stock stock = await stockService.GetStockInfoUsingHardwareIdApi(hardware_id);
                 if(stock == null)
                 {
@@ -53,13 +53,12 @@ namespace Project_AP
                     return hardware;
                 }
                 hardware.Location = location.Id;
-                return hardware;
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"An error occurred: {ex.Message}");
             }
-            return null;
+            return hardware;
         }
         // поиск конкретного оборудования по id stock
         public async Task<List<Hardware>> GetHardwareByRackIdApi(int rack_id)
@@ -71,26 +70,26 @@ namespace Project_AP
 
             HardwareService hardwareService = new(apiUrl, authorizationToken);
             StockService stockService = new(apiUrl1, authorizationToken);
-            
+
+            List<Hardware> allHardware = new();
             // Проверка успешного запроса апи
             try
             {
                 //Rack rack = await rackService.GetRackByIdApi(rack_id);
                 List<Stock> stocks = await stockService.GetStockInfoUsingRackIdApi(rack_id);
-                List<Hardware> allHardware = new();
+                
                 foreach(Stock item in stocks)
                 {
                     Hardware hardware = await hardwareService.GetHardwareNameByIdApi(item.Hardware);
                     hardware.Count = item.Count;
                     allHardware.Add(hardware);
                 }
-                return allHardware;
             }
             catch(Exception ex)
             {
                 MessageBox.Show($"An error occurred: {ex.Message}");
             }
-            return null;
+            return allHardware;
         }
     }
 }

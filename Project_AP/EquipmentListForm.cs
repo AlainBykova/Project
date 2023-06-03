@@ -64,14 +64,20 @@ namespace Project_AP
                             Anchor = AnchorStyles.None,
                             Dock = DockStyle.None
                         };
-
                         int checkWidth = (int)(height * 0.8);
-                        CheckBox checkBox = new()
+                        int checkLoc = ((height - checkWidth) / 2);
+                        Panel checkPanel = new()
                         {
                             Size = new Size(checkWidth, checkWidth),
-                            Dock = DockStyle.Left
+                            Location = new(checkLoc, checkLoc),
                         };
-                        AllHardware.Controls.Add(checkBox);
+
+                        CheckBox checkBox = new()
+                        {
+                            Dock = DockStyle.Fill
+                        };
+                        checkPanel.Controls.Add(checkBox);
+                        AllHardware.Controls.Add(checkPanel);
 
                         int buttonWidth = (int)(width * 0.2);
                         Button detailsButton = new()
