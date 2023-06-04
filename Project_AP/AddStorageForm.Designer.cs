@@ -244,6 +244,7 @@
             createHardware.TabIndex = 3;
             createHardware.Text = "Добавить оборудование";
             createHardware.UseVisualStyleBackColor = false;
+            createHardware.Click += createHardware_Click;
             createHardware.MouseEnter += createHardware_MouseEnter;
             createHardware.MouseLeave += createHardware_MouseLeave;
             // 

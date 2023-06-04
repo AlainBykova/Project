@@ -38,6 +38,7 @@ namespace Project_AP
         private void EquipmentLocationDetails_FormClosed(object sender, FormClosedEventArgs e)
         {
             DialogResult = DialogResult.OK;
+            this.Close();
         }
         bool flag = false;
         private async void EquipmentLocationDetails_Load(object sender, EventArgs e)
@@ -104,6 +105,7 @@ namespace Project_AP
         private void button4_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
+            this.Close();
         }
     }
 }

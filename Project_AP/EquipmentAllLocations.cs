@@ -106,7 +106,6 @@ namespace Project_AP
 
             if (newForm.DialogResult == DialogResult.OK)
             {
-                newForm.Close();
                 this.Show();
             }
         }

@@ -52,22 +52,15 @@ namespace Project_AP
             {
                 bool k1 = int.TryParse(textBox2.Text, out rackWidth);
                 bool k2 = int.TryParse(textBox3.Text, out rackHeight);
+                bool k3 = int.TryParse(textBox1.Text, out rackX);
+                bool k4 = int.TryParse(textBox4.Text, out rackY);
 
-                if (!k1 || !k2)
+                if (!k1 || !k2 || !k3 || !k4)
                 {
                     MessageBox.Show("Вы ввели некорректные данные для размеров");
                 }
                 else
                 {
-                    if (textBox1.Text == null || !int.TryParse(textBox1.Text, out rackX) || (rackX > (locWidth - rackWidth)))
-                    {
-                        rackX = locWidth / 2;
-                    }
-                    if (textBox4.Text == null || !int.TryParse(textBox4.Text, out rackY) || (rackX > (locWidth - rackWidth)))
-                    {
-                        rackY = locHeight / 2;
-                    }
-
                     DialogResult = DialogResult.OK;
                     this.Close();
                 }

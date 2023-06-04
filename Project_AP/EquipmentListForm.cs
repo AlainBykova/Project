@@ -234,5 +234,11 @@ namespace Project_AP
                 HardwareList.Controls.Clear();
             }
         }
+
+        private void AddButton_Click(object sender, EventArgs e)
+        {
+            EquipmentAddForm newForm = new();
+            newForm.ShowDialog();
+        }
     }
 }

@@ -57,7 +57,7 @@ namespace Project_AP
                 List<Location> allLocation = ParseResponseLocation.InfoLocation(responseBody);
 
                 // фильтры
-                Location location = allLocation.SingleOrDefault(location => (location.id == loc_id));
+                Location location = allLocation.Single(location => (location.id == loc_id));
                 return location;
             }
             else

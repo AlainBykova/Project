@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
+using Project_AP;
 
 namespace Project_AP
 {
@@ -23,7 +24,9 @@ namespace Project_AP
         int locationHeight;
         string locationName;
         int locationId;
-        List<Rack> racks;
+        List<Rack> racks = new();
+        List<Stock> allStocks = new();
+        
         public AddStorageForm()
         {
             InitializeComponent();
@@ -40,6 +43,9 @@ namespace Project_AP
                 Application.Exit();
             }
         }
+        RackService rackService = new("https://helow19274.ru/aip/api/rack", "5RNYBdLduTDxQCcM8YYrb5nA:H4dScAyGbS89KgLgZBs2vPsk");
+        StockService stockService = new("https://helow19274.ru/aip/api/stocks", "5RNYBdLduTDxQCcM8YYrb5nA:H4dScAyGbS89KgLgZBs2vPsk");
+        HardwareService hardwraeService = new("https://helow19274.ru/aip/api/hardware", "5RNYBdLduTDxQCcM8YYrb5nA:H4dScAyGbS89KgLgZBs2vPsk");
         GetRightSizes getRightSizes = new();
         bool flag = false;
         private async void AddStorageForm_Load(object sender, EventArgs e)
@@ -113,7 +119,7 @@ namespace Project_AP
             newForm.ShowDialog();
             this.Close();
         }
-        private void CreatRack_Click(object sender, EventArgs e)
+        private async void CreatRack_Click(object sender, EventArgs e)
         {
             AddRackInfo popupForm = new()
             {
@@ -131,8 +137,9 @@ namespace Project_AP
                     y = popupForm.GetRackY(),
                     width = popupForm.GetRackWidth(),
                     height = popupForm.GetRackHeight(),
+                    location = locationId,
                 };
-                racks.Add(newRack);
+
                 Panel rackPanel = new()
                 {
                     BackColor = Color.FromArgb(172, 171, 221),
@@ -151,6 +158,127 @@ namespace Project_AP
                 toolTip.SetToolTip(rackPanel, $"Стеллаж: {newRack.id} ({newRack.width}x{newRack.height}см)");
 
                 panel4.Controls.Add(rackPanel);
+                int k = await rackService.CreateNewRackApi(newRack);
+                newRack.id = k;
+                racks.Add(newRack);
+                CreateRackListInPanel(racks);
+            }
+        }
+        private void CreateRackListInPanel(List<Rack> allRacks)
+        {
+            flowLayoutPanel2.Controls.Clear();
+            if (allRacks.Count == 0)
+            {
+                Panel noRacks = new()
+                {
+                    BackColor = Color.FromArgb(172, 171, 221),
+                    Width = (int)(flowLayoutPanel1.Width * 0.8),
+                    Height = (flowLayoutPanel1.Height / 4),
+                    Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point),
+                };
+                System.Windows.Forms.Label noRack = new()
+                {
+                    Text = "Стеллажей нет",
+                    Dock = DockStyle.Fill,
+                    TextAlign = ContentAlignment.MiddleCenter,
+                };
+                noRacks.Controls.Add(noRack);
+                flowLayoutPanel2.Controls.Add(noRacks);
+            }
+            else
+            {
+                int number = 1;
+                foreach (Rack item in allRacks)
+                {
+                    int width = (int)(flowLayoutPanel2.Width * 0.9);
+                    int height = (int)(flowLayoutPanel2.Height * 0.2);
+                    Panel oneRack = new()
+                    {
+                        BackColor = Color.White,
+                        Margin = new Padding(10),
+                        BorderStyle = BorderStyle.FixedSingle,
+                        Size = new Size(width, height),
+                        Location = new Point((flowLayoutPanel1.Width - width) / 2, height),
+                        Tag = item.id
+                    };
+
+                    MyCheckBox checkBox = new()
+                    {
+                        Dock = DockStyle.Left,
+                        Tag = item.id,
+                    };
+                    oneRack.Controls.Add(checkBox);
+                    //checkBox.Click += CheckBox_Click;
+
+                    System.Windows.Forms.Label nameLabel = new()
+                    {
+                        Text = $"Стеллаж: {number} ({item.width}x{item.height})",
+                        Margin = new Padding(5),
+                        TextAlign = ContentAlignment.MiddleCenter,
+                        Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point),
+                        Dock = DockStyle.Fill,
+                        Tag = item.id
+                    };
+                    oneRack.Controls.Add(nameLabel);
+                    //nameLabel.Click += NameLabel_Click;
+
+                    flowLayoutPanel2.Controls.Add(oneRack);
+                    number++;
+                }
+            }
+        }
+        private async void CreateHardwareListInPanel(List<Stock> allStock)
+        {
+            flowLayoutPanel1.Controls.Clear();
+            if (allStock.Count == 0)
+            {
+                Panel noHardware = new()
+                {
+                    BackColor = Color.FromArgb(172, 171, 221),
+                    Width = (int)(flowLayoutPanel1.Width * 0.8),
+                    Height = (flowLayoutPanel1.Height / 4),
+                    Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point),
+                };
+                System.Windows.Forms.Label noRack = new()
+                {
+                    Text = "Оборудования нет",
+                    Dock = DockStyle.Fill,
+                    TextAlign = ContentAlignment.MiddleCenter,
+                };
+                noHardware.Controls.Add(noRack);
+                flowLayoutPanel1.Controls.Add(noHardware);
+            }
+            else
+            {
+               foreach (Stock st in allStock)
+                    {
+                        API api = new();
+                        Hardware hard = await api.GetHardwareByStockIdApi(st.hardware);
+                        int width = (int)(flowLayoutPanel1.Width * 0.9);
+                        int height = (int)(flowLayoutPanel1.Height * 0.2);
+                        Panel oneHardware = new()
+                        {
+                            BackColor = Color.White,
+                            Margin = new Padding(10),
+                            BorderStyle = BorderStyle.FixedSingle,
+                            Size = new Size(width, height),
+                            Location = new Point((flowLayoutPanel1.Width - width) / 2, height),
+                        };
+
+                        System.Windows.Forms.Label nameLabel = new()
+                        {
+                            Text = hard.name + "  (" + st.count + ")",
+                            Margin = new Padding(5),
+                            TextAlign = ContentAlignment.MiddleCenter,
+                            Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point),
+                            Dock = DockStyle.Fill,
+                            Tag = st.id
+                        };
+                        nameLabel.Click += oneHardwarePanel_Click;
+                        oneHardware.Controls.Add(nameLabel);
+
+                        flowLayoutPanel1.Controls.Add(oneHardware);
+                    }
             }
         }
         private void CreatRack_MouseEnter(object sender, EventArgs e)
@@ -169,6 +297,28 @@ namespace Project_AP
         private void createHardware_MouseLeave(object sender, EventArgs e)
         {
             createHardware.BackColor = Color.FromArgb(143, 142, 191);
+        }
+
+        private async void createHardware_Click(object sender, EventArgs e)
+        {
+            if (racks.Count != 0)
+            {
+                AddLocationHardware newForm = new()
+                {
+                    Size = new Size(560, 430)
+                };
+                newForm.ShowDialog();
+                newForm.allRacks = racks;
+                if (newForm.DialogResult == DialogResult.OK)
+                {
+                    Stock newStock = new();
+                    newStock = newForm.ReturnNewStock();
+                    newForm.Close();
+                    int stId = await stockService.CreateNewStockApi(newStock);
+                    newStock.id = stId;
+                    allStocks.Add(newStock);
+                }
+            }
         }
     }
 }

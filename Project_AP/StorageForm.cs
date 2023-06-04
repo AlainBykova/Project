@@ -16,9 +16,8 @@ namespace Project_AP
     public partial class StorageForm : Form
     {
         List<Hardware> allHardware = new();
-        List<Rack> allRacks = new();
-        List<Stock> allStocks = new();
-        List<Rack> newRacks = new();
+        public List<Rack> allRacks = new();
+        public List<Stock> allStocks = new();
         GetRightSizes getRightSizes = new();
         Location location = new();
         public StorageForm()
@@ -34,14 +33,15 @@ namespace Project_AP
         {
 
         }
-        RackService rackService = new RackService("https://helow19274.ru/aip/api/rack", "5RNYBdLduTDxQCcM8YYrb5nA:H4dScAyGbS89KgLgZBs2vPsk");
-        LocationService curLocation = new("https://helow19274.ru/aip/api/location","5RNYBdLduTDxQCcM8YYrb5nA:H4dScAyGbS89KgLgZBs2vPsk");
+        StockService stockService = new("https://helow19274.ru/aip/api/stocks", "5RNYBdLduTDxQCcM8YYrb5nA:H4dScAyGbS89KgLgZBs2vPsk");
+        RackService rackService = new("https://helow19274.ru/aip/api/rack", "5RNYBdLduTDxQCcM8YYrb5nA:H4dScAyGbS89KgLgZBs2vPsk");
+        LocationService curLocation = new("https://helow19274.ru/aip/api/location", "5RNYBdLduTDxQCcM8YYrb5nA:H4dScAyGbS89KgLgZBs2vPsk");
         private async void StorageForm_Load(object sender, EventArgs e)
         {
             // Получение данных из Tag и использование их
-            if (Tag != null)
+            if (this.Tag != null)
             {
-                int loc_id = (int)Tag;
+                int loc_id = (int)this.Tag;
 
                 location = await curLocation.GetLocationByIdApi(loc_id);
 
@@ -87,9 +87,11 @@ namespace Project_AP
                         flowLayoutPanel1.Controls.Add(noHardware);
                         return;
                     }
-                    API api = new();
-                    foreach (Rack rack in allRacks)
+                    else
                     {
+                        API api = new();
+                        foreach (Rack rack in allRacks)
+                        {
                         Panel rackPanel = new()
                         {
                             BackColor = Color.FromArgb(172, 171, 221),
@@ -109,13 +111,17 @@ namespace Project_AP
                         toolTip.SetToolTip(rackPanel, $"Стеллаж: {number} ({rack.width}x{rack.height}см)");
 
                         panel4.Controls.Add(rackPanel);
-                        
-                        allHardware = await api.GetHardwareByLocationIdApi(loc_id);
-                        CreateHardwareListInPanel(allHardware);
                         number++;
-                    }
+                        }
+                    allHardware = await api.GetHardwareByLocationIdApi(loc_id);
+                    CreateHardwareListInPanel(allHardware);
                     CreateRackListInPanel(allRacks);
                     allStocks = await api.GetStocksForRackList(allRacks);
+                    if(allStocks.Count == 0)
+                        {
+                            MessageBox.Show($"Данные не получены");
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -210,11 +216,11 @@ namespace Project_AP
             Panel panel = (Panel)sender;
             int rack_id = (int)panel.Tag;
             List<Hardware> hardwares = new();
-            foreach(Hardware hardware in allHardware)
+            foreach (Hardware hardware in allHardware)
             {
-                foreach(Rack item in hardware.rack)
+                foreach (Rack item in hardware.rack)
                 {
-                    if(item.id == rack_id)
+                    if (item.id == rack_id)
                     {
                         hardwares.Add(hardware);
                     }
@@ -253,61 +259,74 @@ namespace Project_AP
             {
                 foreach (Hardware item in allHardware)
                 {
-                    foreach(Stock st in item.stock)
+                    foreach (Stock st in item.stock)
                     {
-                    int width = (int)(flowLayoutPanel1.Width * 0.9);
-                    int height = (int)(flowLayoutPanel1.Height * 0.2);
-                    Panel oneHardware = new()
-                    {
-                        BackColor = Color.White,
-                        Margin = new Padding(10),
-                        BorderStyle = BorderStyle.FixedSingle,
-                        Size = new Size(width, height),
-                        Location = new Point((flowLayoutPanel1.Width - width) / 2, height),
-                        Tag = st.id
-                    };
+                        int width = (int)(flowLayoutPanel1.Width * 0.9);
+                        int height = (int)(flowLayoutPanel1.Height * 0.2);
+                        Panel oneHardware = new()
+                        {
+                            BackColor = Color.White,
+                            Margin = new Padding(10),
+                            BorderStyle = BorderStyle.FixedSingle,
+                            Size = new Size(width, height),
+                            Location = new Point((flowLayoutPanel1.Width - width) / 2, height),
+                        };
 
-                    Label nameLabel = new()
-                    {
-                        Text = item.name + "  (" + st.count + ")",
-                        Margin = new Padding(5),
-                        TextAlign = ContentAlignment.MiddleCenter,
-                        Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point),
-                        Dock = DockStyle.Fill,
-                        Tag = st.id
-                    };
-                    nameLabel.Click += oneHardwarePanel_Click;
-                    oneHardware.Controls.Add(nameLabel);
+                        Label nameLabel = new()
+                        {
+                            Text = item.name + "  (" + st.count + ")",
+                            Margin = new Padding(5),
+                            TextAlign = ContentAlignment.MiddleCenter,
+                            Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point),
+                            Dock = DockStyle.Fill,
+                            Tag = st.id
+                        };
+                        nameLabel.Click += oneHardwarePanel_Click;
+                        oneHardware.Controls.Add(nameLabel);
 
-                    flowLayoutPanel1.Controls.Add(oneHardware);
+                        flowLayoutPanel1.Controls.Add(oneHardware);
                     }
                 }
             }
         }
         private async void oneHardwarePanel_Click(object sender, EventArgs e)
         {
-            Label label = (Label)sender;
-            int stock_id = (int)label.Tag;
-            EquipmentLocationDetails newForm = new()
-            {
-                Size = new Size(800, 550)
-            };
-            this.Hide();
+            //Label label = (Label)sender;
+            //int stock_id = (int)label.Tag;
+            //EquipmentLocationDetails newForm = new()
+            //{
+            //    Size = new Size(800, 550)
+            //};
+            //this.Hide();
 
-            Stock neededStock = allStocks.SingleOrDefault(stock => (stock.id == stock_id));
-            Rack neededRack = allRacks.SingleOrDefault(rack => (rack.id == neededStock.rack));
-            API api = new API();
+            //Stock neededStock = new();
+            //neededStock = await stockService.GetStockByIdApi(stock_id);
 
-            newForm.hardware = await api.GetAllInfoHardware(neededStock.hardware);
-            newForm.hardwareLocation = location;
-            newForm.hardwareStock = neededStock;
-            newForm.hardwareRack = neededRack;
-            newForm.ShowDialog();
+            //Rack neededRack = new();
+            //neededRack = allRacks.SingleOrDefault(rack => (rack.id == neededStock.rack));
+            //if (neededRack == null)
+            //{
+            //    MessageBox.Show($"Данные не получены neededRack");
+            //    return;
+            //}
+            //API api = new API();
+            //Hardware newHardware = await api.GetAllInfoHardware(neededStock.hardware);
+            //if(newHardware == null)
+            //{
+            //    MessageBox.Show($"Данные не получены newHardware");
+            //    return;
+            //}
+            //Location loc = location;
+            //newForm.hardware = newHardware;
+            //newForm.hardwareLocation = loc;
+            //newForm.hardwareStock = neededStock;
+            //newForm.hardwareRack = neededRack;
+            //newForm.ShowDialog();
 
-            if(newForm.DialogResult == DialogResult.OK)
-            {
-                newForm.Close();
-            }
+            //if (newForm.DialogResult == DialogResult.OK)
+            //{
+            //    newForm.Close();
+            //}
         }
         bool flag = false;
         private void panel3_Click(object sender, EventArgs e)
@@ -335,7 +354,6 @@ namespace Project_AP
                     height = popupForm.GetRackHeight(),
                     location = location.id
                 };
-                newRacks.Add(newRack);
                 Panel rackPanel = new()
                 {
                     BackColor = Color.FromArgb(172, 171, 221),
@@ -355,7 +373,32 @@ namespace Project_AP
 
                 panel4.Controls.Add(rackPanel);
                 int k = await rackService.CreateNewRackApi(newRack);
+                newRack.id = k;
+                allRacks.Add(newRack);
+                CreateRackListInPanel(allRacks);
             }
+        }
+        private async void button3_Click(object sender, EventArgs e)
+        {
+            if(allRacks.Count != 0)
+            {
+            AddLocationHardware newForm = new()
+            {
+                Size = new Size(560, 430)
+            };
+            newForm.ShowDialog();
+            newForm.allRacks = allRacks;
+            if(newForm.DialogResult == DialogResult.OK)
+            {
+                Stock newStock = new();
+                newStock = newForm.ReturnNewStock();
+                newForm.Close();
+                int stId = await stockService.CreateNewStockApi(newStock);
+                newStock.id = stId;
+                allStocks.Add(newStock);
+            }
+            }
+            
         }
     }
 }

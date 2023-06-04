@@ -142,6 +142,25 @@ namespace Project_AP
             }
             return allHardware;
         }
+        public async Task<Hardware> GetHardwareByStockIdApi(int loc_id)
+        {
+            string apiUrl = "https://helow19274.ru/aip/api/hardware";
+            string authorizationToken = "5RNYBdLduTDxQCcM8YYrb5nA:H4dScAyGbS89KgLgZBs2vPsk";
+
+            HardwareService hardwareService = new(apiUrl, authorizationToken);
+           Hardware hardware = new();
+            // Проверка успешного запроса апи
+            try
+            {
+                hardware = await hardwareService.GetHardwareNameByIdApi(loc_id);
+                hardware.stock = new List<Stock>();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
+            return hardware;
+        }
         public async Task<List<Stock>> GetStocksForRackList(List<Rack> racks)
         {
             string apiUrl2 = "https://helow19274.ru/aip/api/stocks";
@@ -152,7 +171,8 @@ namespace Project_AP
             {
                 foreach(Rack item in racks)
                 {
-                    List<Stock> stock = await stockService.GetStockInfoUsingRackIdApi(item.id);
+                    List<Stock> stock = new();
+                    stock = await stockService.GetStockInfoUsingRackIdApi(item.id);
                     foreach(Stock st in stock)
                     {
                         stocks.Add(st);
