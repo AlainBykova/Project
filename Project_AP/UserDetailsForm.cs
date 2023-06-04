@@ -59,33 +59,33 @@ namespace Project_AP
                         switch (panel.Tag)
                         {
                             case 1:
-                                label.Text = user.First_name + " " + user.Last_name + " " + user.Patronymic;
+                                label.Text = user.first_name + " " + user.last_name + " " + user.patronymic;
                                 label.Font = new Font("Segoe UI", 26F, FontStyle.Regular, GraphicsUnit.Point);
                                 break;
                             case 2:
-                                label.Text = user.Email;
+                                label.Text = user.email;
                                 label.Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point);
                                 label.ForeColor = Color.FromArgb(143, 142, 191);
                                 break;
                             case 3:
-                                if (string.IsNullOrEmpty(user.PhoneNumber))
+                                if (string.IsNullOrEmpty(user.phone))
                                 {
                                     label.Text = "Номера телефона нет в базе данных";
                                 }
                                 else
                                 {
-                                    label.Text = user.PhoneNumber;
+                                    label.Text = user.phone;
                                 }
                                 label.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
                                 break;
                             case 4:
-                                if (string.IsNullOrEmpty(user.Type))
+                                if (string.IsNullOrEmpty(user.type))
                                 {
                                     label.Text = "Необходимых данных о состоянии пользователя нет";
                                 }
                                 else
                                 {
-                                    label.Text = user.Type;
+                                    label.Text = user.type;
                                 }
                                 label.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
                                 break;
@@ -96,10 +96,10 @@ namespace Project_AP
 
                     }
 
-                    if (!string.IsNullOrEmpty(user.Image_link))
+                    if (!string.IsNullOrEmpty(user.image_link))
                     {
 
-                        if (Uri.TryCreate(user.Image_link, UriKind.Absolute, out Uri uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
+                        if (Uri.TryCreate(user.image_link, UriKind.Absolute, out Uri uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
                         {
                             using (WebClient client = new WebClient())
                             {

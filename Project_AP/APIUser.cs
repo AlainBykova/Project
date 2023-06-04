@@ -34,7 +34,7 @@ namespace Project_AP
                 List<User> allUsers = ParseResponseUser.InfoUser(responseBody);
 
                 // Фильтры
-                List<User> filteredUsers = allUsers.FindAll(user => (user.First_name.Contains(searchString) | user.Last_name.Contains(searchString)));
+                List<User> filteredUsers = allUsers.FindAll(user => (user.first_name.Contains(searchString) | user.last_name.Contains(searchString)));
                 return filteredUsers;
             }
             else
@@ -71,15 +71,15 @@ namespace Project_AP
 
                 User user = new()
                 {
-                    First_name = f_name,
-                    Last_name = l_name,
-                    Patronymic = patronymic,
-                    Type = type,
-                    Image_link = image_link,
-                    Email = email,
-                    PhoneNumber = phone,
-                    Id = id,
-                    Created = created
+                    first_name = f_name,
+                    last_name = l_name,
+                    patronymic = patronymic,
+                    type = type,
+                    image_link = image_link,
+                    email = email,
+                    phone = phone,
+                    id = id,
+                    created = created
                  };
                 return user;
             }
@@ -92,18 +92,18 @@ namespace Project_AP
 
     public class User
     {
-        public bool Active { get; set; }
-        public string Type { get; set; }
+        public bool active { get; set; }
+        public string type { get; set; }
 
-        public string First_name { get; set; }
-        public string Last_name { get; set; }
-        public string Patronymic { get; set; }
-        public string Image_link { get; set; }
-        public string Email { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Card_id { get; set; }
-        public string Card_key { get; set; }
-        public int Id { get; set; }
-        public string Created { get; set; }
+        public string first_name { get; set; }
+        public string last_name { get; set; }
+        public string patronymic { get; set; }
+        public string image_link { get; set; }
+        public string email { get; set; }
+        public string phone { get; set; }
+        public string card_id { get; set; }
+        public string card_key { get; set; }
+        public int id { get; set; }
+        public string created { get; set; }
     }
 }

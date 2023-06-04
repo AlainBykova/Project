@@ -23,7 +23,7 @@ namespace Project_AP
             this.authorizationToken = authorizationToken;
         }
         // Получить данные о rack через id location
-        public async Task<List<Rack>> GetRackInfoUsingLocationIdApi(int loc_id)
+        public async Task<List<Rack>> GetRackByLocationIdApi(int loc_id)
         {
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
             HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
@@ -34,7 +34,7 @@ namespace Project_AP
                 string responseBody = await response.Content.ReadAsStringAsync();
                 List<Rack> allLocations = ParseResponseRack.InfoRack(responseBody);
                 // Фильтры
-                List<Rack> filteredLocations = allLocations.FindAll(rack => (rack.Location == loc_id));
+                List<Rack> filteredLocations = allLocations.FindAll(rack => (rack.location == loc_id));
                 return filteredLocations;
             }
             else
@@ -55,7 +55,7 @@ namespace Project_AP
                 string responseBody = await response.Content.ReadAsStringAsync();
                 List<Rack> allRacks = ParseResponseRack.InfoRack(responseBody);
                 // Фильтр
-                Rack rack = allRacks.SingleOrDefault(rack => (rack.Id == rack_id));
+                Rack rack = allRacks.SingleOrDefault(rack => (rack.id == rack_id));
                 return rack;
             }
             else
@@ -100,12 +100,12 @@ namespace Project_AP
     // Описание класса
     public class Rack
     {
-        public int Location { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
-        public int Id { get; set; }
-        public int X { get; set; }
-        public int Y { get; set; }
+        public int location { get; set; }
+        public int width { get; set; }
+        public int height { get; set; }
+        public int id { get; set; }
+        public int x { get; set; }
+        public int y { get; set; }
     }
 }
 

@@ -28,31 +28,44 @@ namespace Project_AP
             try
             {
                 hardware = await hardwareService.GetHardwareByIdApi(hardware_id);
-                Stock stock = await stockService.GetStockInfoUsingHardwareIdApi(hardware_id);
-                if(stock == null)
+                List<Stock> stocks = await stockService.GetStockInfoUsingHardwareIdApi(hardware_id);
+                if(stocks == null)
                 {
-                    hardware.Stock = -1;
-                    hardware.Rack = -1;
-                    hardware.Location = -1;
+                    hardware.stock = null;
+                    hardware.rack = null;
+                    hardware.location = null;
                     return hardware;
                 }
-                hardware.Stock = stock.Id;
-                hardware.Rack_position = stock.Rack_position;
-                Rack rack = await rackService.GetRackByIdApi(stock.Rack);
-                if(rack == null)
+                hardware.stock = new List<Stock>();
+                hardware.rack = new List<Rack>();
+                hardware.location = new List<Location>();
+                List<int> countRackId = new();
+                List<int> countLocId = new();
+                foreach(Stock st in stocks)
                 {
-                    hardware.Rack = -1;
-                    hardware.Location = -1;
-                    return hardware;
+                    hardware.stock.Add(st);
+                    Rack rack = await rackService.GetRackByIdApi(st.rack);
+                    if(rack == null)
+                    {
+                        return hardware;
+                    }
+                    if (countRackId.Contains(rack.id) == false)
+                    {
+                        hardware.rack.Add(rack);
+                        countRackId.Add(rack.id);
+                    }
+                    
+                    Location location = await locationService.GetLocationByIdApi(rack.location);
+                    if(location == null)
+                    {
+                        return hardware;
+                    }
+                    if(countLocId.Contains(location.id) == false)
+                    {
+                        hardware.location.Add(location);
+                        countLocId.Add(location.id);
+                    }
                 }
-                hardware.Rack = rack.Id;
-                Location location = await locationService.GetLocationByIdApi(rack.Location);
-                if(location == null)
-                {
-                    hardware.Location = -1;
-                    return hardware;
-                }
-                hardware.Location = location.Id;
             }
             catch (Exception ex)
             {
@@ -80,8 +93,8 @@ namespace Project_AP
                 
                 foreach(Stock item in stocks)
                 {
-                    Hardware hardware = await hardwareService.GetHardwareNameByIdApi(item.Hardware);
-                    hardware.Count = item.Count;
+                    Hardware hardware = await hardwareService.GetHardwareNameByIdApi(item.hardware);
+                    hardware.stock.Add(item);
                     allHardware.Add(hardware);
                 }
             }
@@ -90,6 +103,118 @@ namespace Project_AP
                 MessageBox.Show($"An error occurred: {ex.Message}");
             }
             return allHardware;
+        }
+        public async Task<List<Hardware>> GetHardwareByLocationIdApi(int loc_id)
+        {
+            string apiUrl = "https://helow19274.ru/aip/api/hardware";
+            string apiUrl1 = "https://helow19274.ru/aip/api/stocks";
+            string apiUrl2 = "https://helow19274.ru/aip/api/rack";
+
+            string authorizationToken = "5RNYBdLduTDxQCcM8YYrb5nA:H4dScAyGbS89KgLgZBs2vPsk";
+
+            HardwareService hardwareService = new(apiUrl, authorizationToken);
+            StockService stockService = new(apiUrl1, authorizationToken);
+            RackService rackService = new(apiUrl2, authorizationToken);
+
+            List<Hardware> allHardware = new();
+            // Проверка успешного запроса апи
+            try
+            {
+                List<Rack> racks = await rackService.GetRackByLocationIdApi(loc_id);
+                foreach(Rack rack in racks)
+                {
+                    List<Stock> stocks = await stockService.GetStockInfoUsingRackIdApi(rack.id);
+
+                    foreach (Stock item in stocks)
+                    {
+                        Hardware hardware = await hardwareService.GetHardwareNameByIdApi(item.hardware);
+                        hardware.stock = new List<Stock>();
+                        hardware.rack = new List<Rack>();
+                        hardware.stock.Add(item);
+                        hardware.rack.Add(rack);
+                        allHardware.Add(hardware);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
+            return allHardware;
+        }
+        public async Task<List<Stock>> GetStocksForRackList(List<Rack> racks)
+        {
+            string apiUrl2 = "https://helow19274.ru/aip/api/stocks";
+            string authorizationToken = "5RNYBdLduTDxQCcM8YYrb5nA:H4dScAyGbS89KgLgZBs2vPsk";
+            StockService stockService = new(apiUrl2, authorizationToken);
+            List<Stock> stocks = new();
+            try
+            {
+                foreach(Rack item in racks)
+                {
+                    List<Stock> stock = await stockService.GetStockInfoUsingRackIdApi(item.id);
+                    foreach(Stock st in stock)
+                    {
+                        stocks.Add(st);
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
+            return stocks;
+        }
+        public async void DeleteAllLocationInfo(int loc_id)
+        {
+            string apiUrl2 = "https://helow19274.ru/aip/api/stocks";
+            string apiUrl3 = "https://helow19274.ru/aip/api/rack";
+            string apiUrl4 = "https://helow19274.ru/aip/api/location";
+            string authorizationToken = "5RNYBdLduTDxQCcM8YYrb5nA:H4dScAyGbS89KgLgZBs2vPsk";
+
+            StockService stockService = new(apiUrl2, authorizationToken);
+            RackService rackService = new(apiUrl3, authorizationToken);
+            LocationService locationService = new(apiUrl4, authorizationToken);
+            try
+            {
+                List<Rack> racks = await rackService.GetRackByLocationIdApi(loc_id);
+            foreach(Rack rack in racks)
+            {
+                List<Stock> stocks = await stockService.GetStockInfoUsingRackIdApi(rack.id);
+                foreach(Stock stock in stocks)
+                {
+                    stockService.DeleteStockApi(stock.id);
+                }
+                rackService.DeleteRackApi(rack.id);
+            }
+            locationService.DeleteLocationApi(loc_id);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
+        }
+        public async void DeleteAllHardwareInfo(int loc_id)
+        {
+            string apiUrl2 = "https://helow19274.ru/aip/api/hardware";
+            string apiUrl3 = "https://helow19274.ru/aip/api/stocks";
+            string authorizationToken = "5RNYBdLduTDxQCcM8YYrb5nA:H4dScAyGbS89KgLgZBs2vPsk";
+
+            StockService stockService = new(apiUrl3, authorizationToken);
+            HardwareService hardService = new(apiUrl2, authorizationToken);
+            try
+            {
+                List<Stock> stocks = await stockService.GetStockInfoUsingHardwareIdApi(loc_id);
+            foreach (Stock stock in stocks)
+            {
+                stockService.DeleteStockApi(stock.id);
+            }
+            hardService.DeleteHardwareApi(loc_id);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
         }
     }
 }

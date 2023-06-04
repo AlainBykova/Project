@@ -40,41 +40,8 @@ namespace Project_AP
                 Application.Exit();
             }
         }
-        private List<int> FindNeededSizes(int parentWidth, int parentHeight, int childWidth, int childHeight)
-        {
-            List<int> properties = new();
-
-            double width = ((double)parentWidth / childWidth);
-            double height = ((double)parentHeight / childHeight);
-            double minValue = Math.Min(width, height);
-            int widthLoc = (int)Math.Round(childWidth * minValue);
-            int heightLoc = (int)Math.Round(childHeight * minValue);
-            properties.Add(widthLoc);
-            properties.Add(heightLoc);
-            return properties;
-        }
-        private List<int> FindNeededSizes2(int panelWidth, int panelHeight, int truepanelWidth, int truepanelHeight, int rW, int rH, bool flag)
-        {
-            int rackWidth;
-            int rackHeight;
-            if (flag == true)
-            {
-                rackWidth = rH;
-                rackHeight = rW;
-            }
-            else
-            {
-                rackWidth = rW;
-                rackHeight = rH;
-            }
-            int width1 = (int)(((double)rackWidth / truepanelWidth) * panelWidth);
-            int height1 = (int)(((double)rackHeight / truepanelHeight) * panelHeight);
-            List<int> prop = new();
-            prop.Add(width1);
-            prop.Add(height1);
-            return prop;
-        }
-
+        GetRightSizes getRightSizes = new();
+        bool flag = false;
         private async void AddStorageForm_Load(object sender, EventArgs e)
         {
             AddLocationInfo popupForm = new()
@@ -102,22 +69,22 @@ namespace Project_AP
             LocationService curLocation = new(apiUrlLoc, authorizationToken);
             Location location = new()
             {
-                Width = locationWidth,
-                Height = locationHeight,
-                Name = locationName
+                width = locationWidth,
+                height = locationHeight,
+                name = locationName
             };
             locationId = await curLocation.CreateNewLocationApi(location);
 
-            int locWidth = Math.Max(location.Width, location.Height);
-            int locHeight = Math.Min(location.Width, location.Height);
-            bool flag = false;
-            if (locWidth == location.Height)
+            int locWidth = Math.Max(location.width, location.height);
+            int locHeight = Math.Min(location.width, location.height);
+
+            if (locWidth == location.height)
             {
                 flag = true;
             }
 
-            label11.Text = location.Name + " (" + ((double)location.Width / 100).ToString("F2") + "x" + ((double)location.Height / 100).ToString("F2") + "м)";
-            List<int> property = FindNeededSizes((panel2.Width - 20), (panel2.Height - 20), locWidth, locHeight);
+            label11.Text = location.name + " (" + ((double)location.width / 100).ToString("F2") + "x" + ((double)location.height / 100).ToString("F2") + "м)";
+            List<int> property = getRightSizes.FindNeededSizes((panel2.Width - 20), (panel2.Height - 20), locWidth, locHeight);
 
             panel4.Size = new(property[0], property[1]);
             int pointX = (int)((panel2.Width - property[0]) / 2);
@@ -153,27 +120,37 @@ namespace Project_AP
                 Size = new Size(600, 500),
             };
             popupForm.ShowDialog();
+            popupForm.locWidth = locationWidth;
+            popupForm.locHeight = locationHeight;
+
             if (popupForm.DialogResult == DialogResult.OK)
             {
                 Rack newRack = new()
                 {
-                    X = popupForm.GetRackX(),
-                    Y = popupForm.GetRackY(),
-                    Width = popupForm.GetRackWidth(),
-                    Height = popupForm.GetRackHeight(),
+                    x = popupForm.GetRackX(),
+                    y = popupForm.GetRackY(),
+                    width = popupForm.GetRackWidth(),
+                    height = popupForm.GetRackHeight(),
                 };
                 racks.Add(newRack);
-
-            }
-            else
-            {
-                StorageListForm newForm = new()
+                Panel rackPanel = new()
                 {
-                    Size = this.Size
+                    BackColor = Color.FromArgb(172, 171, 221),
+                    BorderStyle = BorderStyle.FixedSingle,
+                    Location = new(newRack.x, newRack.y),
+                    Tag = newRack.id,
                 };
-                this.Hide();
-                newForm.ShowDialog();
-                this.Close();
+                List<int> property = getRightSizes.FindNeededSizes2(panel4.Width, panel4.Height, locationWidth, locationHeight, newRack.width, newRack.height, flag);
+                rackPanel.Size = new(property[0], property[1]);
+
+                property = getRightSizes.FindNeededSizes2(panel4.Width, panel4.Height, locationWidth, locationHeight, newRack.x, newRack.y, flag);
+                rackPanel.Location = new(property[0], property[1]);
+                rackPanel.Click += RackPanel_Click;
+
+                ToolTip toolTip = new ToolTip();
+                toolTip.SetToolTip(rackPanel, $"Стеллаж: {newRack.id} ({newRack.width}x{newRack.height}см)");
+
+                panel4.Controls.Add(rackPanel);
             }
         }
         private void CreatRack_MouseEnter(object sender, EventArgs e)
@@ -186,12 +163,12 @@ namespace Project_AP
         }
         private void createHardware_MouseEnter(object sender, EventArgs e)
         {
-            CreatRack.BackColor = Color.FromArgb(255, 122, 114);
+            createHardware.BackColor = Color.FromArgb(255, 122, 114);
         }
 
         private void createHardware_MouseLeave(object sender, EventArgs e)
         {
-            CreatRack.BackColor = Color.FromArgb(143, 142, 191);
+            createHardware.BackColor = Color.FromArgb(143, 142, 191);
         }
     }
 }

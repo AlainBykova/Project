@@ -13,6 +13,7 @@ namespace Project_AP
 {
     public partial class EquipmentForm : Form
     {
+        RackService rackService = new("https://helow19274.ru/aip/api/rack", "5RNYBdLduTDxQCcM8YYrb5nA:H4dScAyGbS89KgLgZBs2vPsk");
         public EquipmentForm()
         {
             InitializeComponent();
@@ -33,7 +34,7 @@ namespace Project_AP
                 try
                 {
                     Hardware hardware = await api.GetAllInfoHardware(hardware_id);
-                    int height = (int)(flowLayoutPanel1.Height / 6);
+                    int height = (int)(flowLayoutPanel1.Height / 7);
                     for (int i = 1; i < 4; i++)
                     {
                         Panel panel = new()
@@ -46,30 +47,30 @@ namespace Project_AP
 
                         Label label = new()
                         {
-                            TextAlign = ContentAlignment.MiddleLeft,
+                            TextAlign = ContentAlignment.MiddleCenter,
                             Dock = DockStyle.Fill,
                         };
                         switch (panel.Tag)
                         {
                             case 1:
-                                label.Text = hardware.Name;
-                                label.Font = new Font("Segoe UI", 26F, FontStyle.Regular, GraphicsUnit.Point);
+                                label.Text = hardware.name;
+                                label.Font = new Font("Segoe UI", 32F, FontStyle.Regular, GraphicsUnit.Point);
                                 break;
                             case 2:
-                                label.Text = hardware.Type;
-                                label.Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point);
+                                label.Text = "Тип оборудования: " + hardware.type;
+                                label.Font = new Font("Segoe UI", 24F, FontStyle.Regular, GraphicsUnit.Point);
                                 label.ForeColor = Color.FromArgb(143, 142, 191);
                                 break;
                             case 3:
-                                if (string.IsNullOrEmpty(hardware.Description))
+                                if (string.IsNullOrEmpty(hardware.description))
                                 {
                                     label.Text = "Описания нет в базе данных";
                                 }
                                 else
                                 {
-                                    label.Text = hardware.Description;
+                                    label.Text = "Описание: " + hardware.description;
                                 }
-                                label.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
+                                label.Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point);
                                 break;
                         }
                         
@@ -92,9 +93,9 @@ namespace Project_AP
                         popupForm.Size = new System.Drawing.Size(450, 450);
                         popupForm.ShowIcon = false;
                         List<string> specificationItems = new List<string>();
-                        if(hardware.Specifications != null)
+                        if(hardware.specifications != null)
                         {
-                            foreach (KeyValuePair<string, int> pair in hardware.Specifications)
+                            foreach (KeyValuePair<string, int> pair in hardware.specifications)
                             {
                             string key = pair.Key;
                             int value = pair.Value;
@@ -125,11 +126,28 @@ namespace Project_AP
                         popupForm.Show();
                     };
                     flowLayoutPanel1.Controls.Add(specificationButton);
+                    Button locationButton = new()
+                    {
+                        FlatStyle = FlatStyle.Flat,
+                        BackColor = Color.FromArgb(143, 142, 191),
+                        Text = "Место положение",
+                        Size = new Size(flowLayoutPanel1.Width, height),
+                    };
+                    flowLayoutPanel1.Controls.Add(locationButton);
+                    locationButton.Click += async (sender, e) =>
+                    {
+                        EquipmentAllLocations newForm = new()
+                        {
+                            Size = new Size(520, 390)
+                        };
+                        newForm.hardware = hardware;
+                        newForm.Show();
+                    };
 
-                    if (!string.IsNullOrEmpty(hardware.Image_link))
+                    if (!string.IsNullOrEmpty(hardware.image_link))
                     {
 
-                        if (Uri.TryCreate(hardware.Image_link, UriKind.Absolute, result: out Uri uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
+                        if (Uri.TryCreate(hardware.image_link, UriKind.Absolute, result: out Uri uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
                         {
                             using WebClient client = new();
                             try

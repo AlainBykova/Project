@@ -12,6 +12,9 @@ namespace Project_AP
 {
     public partial class EquipmentListForm : Form
     {
+        List<int> checkBoxTag = new();
+        string apiUrl = "https://helow19274.ru/aip/api/hardware";
+        string authorizationToken = "5RNYBdLduTDxQCcM8YYrb5nA:H4dScAyGbS89KgLgZBs2vPsk";
         public EquipmentListForm()
         {
             InitializeComponent();
@@ -65,19 +68,13 @@ namespace Project_AP
                             Dock = DockStyle.None
                         };
                         int checkWidth = (int)(height * 0.8);
-                        int checkLoc = ((height - checkWidth) / 2);
-                        Panel checkPanel = new()
+                        MyCheckBox checkBox = new()
                         {
-                            Size = new Size(checkWidth, checkWidth),
-                            Location = new(checkLoc, checkLoc),
+                            Dock = DockStyle.Left,
+                            Tag = item.id,
                         };
-
-                        CheckBox checkBox = new()
-                        {
-                            Dock = DockStyle.Fill
-                        };
-                        checkPanel.Controls.Add(checkBox);
-                        AllHardware.Controls.Add(checkPanel);
+                        AllHardware.Controls.Add(checkBox);
+                        checkBox.Click += CheckBox_Click;
 
                         int buttonWidth = (int)(width * 0.2);
                         Button detailsButton = new()
@@ -87,14 +84,14 @@ namespace Project_AP
                             Size = new Size(buttonWidth, checkWidth),
                             BackColor = Color.FromArgb(143, 142, 191),
                             Dock = DockStyle.Right,
-                            Tag = item.Id,
+                            Tag = item.id,
                         };
                         detailsButton.Click += DetailsButton_Click;
                         AllHardware.Controls.Add(detailsButton);
 
                         Label nameLabel = new()
                         {
-                            Text = item.Name,
+                            Text = item.name,
                             Margin = new Padding(10),
                             TextAlign = ContentAlignment.MiddleCenter,
                             //AutoSize = true,
@@ -208,6 +205,34 @@ namespace Project_AP
             this.Hide();
             newForm.ShowDialog();
             this.Close();
+        }
+        private void CheckBox_Click(object sender, EventArgs e)
+        {
+            MyCheckBox cb = (MyCheckBox)sender;
+            int loc_id = (int)cb.Tag;
+            if (cb.Checked)
+            {
+                cb.BackColor = Color.FromArgb(255, 122, 114);
+                checkBoxTag.Add(loc_id);
+            }
+            else
+            {
+                cb.BackColor = Color.White;
+                checkBoxTag.Remove(loc_id);
+            }
+        }
+        private void DeleteButton_Click(object sender, EventArgs e)
+        {
+            if (checkBoxTag.Count != 0)
+            {
+                foreach (int id in checkBoxTag)
+                {
+                    API api = new();
+                    api.GetAllInfoHardware(id);
+                }
+                checkBoxTag.Clear();
+                HardwareList.Controls.Clear();
+            }
         }
     }
 }

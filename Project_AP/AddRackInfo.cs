@@ -17,6 +17,8 @@ namespace Project_AP
         int rackHeight = 0;
         int rackX = -1;
         int rackY = -1;
+        public int locWidth;
+        public int locHeight;
         public AddRackInfo()
         {
             InitializeComponent();
@@ -48,16 +50,26 @@ namespace Project_AP
         {
             if (textBox2.Text != null && textBox3.Text != null)
             {
-                bool k = int.TryParse(textBox2.Text, out rackWidth);
-                bool v = int.TryParse(textBox3.Text, out rackHeight);
-                if (k && v)
+                bool k1 = int.TryParse(textBox2.Text, out rackWidth);
+                bool k2 = int.TryParse(textBox3.Text, out rackHeight);
+
+                if (!k1 || !k2)
                 {
-                    DialogResult = DialogResult.OK;
-                    this.Close();
+                    MessageBox.Show("Вы ввели некорректные данные для размеров");
                 }
                 else
                 {
-                    MessageBox.Show("Вы ввели некорректные данные");
+                    if (textBox1.Text == null || !int.TryParse(textBox1.Text, out rackX) || (rackX > (locWidth - rackWidth)))
+                    {
+                        rackX = locWidth / 2;
+                    }
+                    if (textBox4.Text == null || !int.TryParse(textBox4.Text, out rackY) || (rackX > (locWidth - rackWidth)))
+                    {
+                        rackY = locHeight / 2;
+                    }
+
+                    DialogResult = DialogResult.OK;
+                    this.Close();
                 }
             }
             else

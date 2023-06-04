@@ -73,12 +73,13 @@ namespace Project_AP
                         };
 
                         int checkWidth = (int)(height * 0.8);
-                        CheckBox checkBox = new()
-                        {
-                            Size = new Size(checkWidth, checkWidth),
-                            Dock = DockStyle.Left
-                        };
-                        ManyUsers.Controls.Add(checkBox);
+                        //MyCheckBox checkBox = new()
+                        //{
+                        //    Dock = DockStyle.Left,
+                        //    Tag = item.Id,
+                        //};
+                        //AManyUsers.Controls.Add(checkBox);
+                        //checkBox.Click += CheckBox_Click;
 
                         int buttonWidth = (int)(width * 0.2);
                         Button detailsButton = new()
@@ -88,14 +89,14 @@ namespace Project_AP
                             Size = new Size(buttonWidth, checkWidth),
                             BackColor = Color.FromArgb(143, 142, 191),
                             Dock = DockStyle.Right,
-                            Tag = item.Id,
+                            Tag = item.id,
                         };
                         detailsButton.Click += DetailsButton_Click;
                         ManyUsers.Controls.Add(detailsButton);
 
                         Label nameLabel = new()
                         {
-                            Text = item.First_name + " " + item.Last_name + " " + item.Patronymic,
+                            Text = item.first_name + " " + item.last_name + " " + item.patronymic,
                             Margin = new Padding(10),
                             TextAlign = ContentAlignment.MiddleCenter,
                             //AutoSize = true,
@@ -212,7 +213,6 @@ namespace Project_AP
             newForm.ShowDialog();
             this.Close();
         }
-
     }
 
 }

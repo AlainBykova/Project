@@ -61,13 +61,11 @@ namespace Project_AP
                             Anchor = AnchorStyles.None,
                             Dock = DockStyle.None
                         };
-
                         int checkWidth = (int)(height * 0.8);
                         MyCheckBox checkBox = new()
                         {
-                            //Size = new Size(checkWidth, checkWidth),
                             Dock = DockStyle.Left,
-                            Tag = item.Id,
+                            Tag = item.id,
                         };
                         ManyLocations.Controls.Add(checkBox);
                         checkBox.Click += CheckBox_Click;
@@ -80,14 +78,14 @@ namespace Project_AP
                             Size = new Size(buttonWidth, checkWidth),
                             BackColor = Color.FromArgb(143, 142, 191),
                             Dock = DockStyle.Right,
-                            Tag = item.Id,
+                            Tag = item.id,
                         };
                         detailsButton.Click += DetailsButton_Click;
                         ManyLocations.Controls.Add(detailsButton);
 
                         Label nameLabel = new()
                         {
-                            Text = item.Name,
+                            Text = item.name,
                             Margin = new Padding(10),
                             TextAlign = ContentAlignment.MiddleCenter,
                             //AutoSize = true,
@@ -149,8 +147,8 @@ namespace Project_AP
             this.Hide();
             newForm.Tag = loc_id;
             newForm.ShowDialog();
-
-            if (newForm.DialogResult == DialogResult.OK)
+            
+            if(newForm.DialogResult == DialogResult.OK)
             {
                 this.Show();
             }
@@ -226,8 +224,8 @@ namespace Project_AP
             {
                 foreach (int id in CheckBoxTag)
                 {
-                    LocationService loc = new(apiUrl, authorizationToken);
-                    loc.DeleteLocationApi(id);
+                    API api = new();
+                    api.DeleteAllLocationInfo(id);
                 }
                 CheckBoxTag.Clear();
                 LocationList.Controls.Clear();

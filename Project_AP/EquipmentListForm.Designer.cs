@@ -275,6 +275,7 @@
             DeleteButton.TabIndex = 8;
             DeleteButton.Text = "Удалить";
             DeleteButton.UseVisualStyleBackColor = false;
+            DeleteButton.Click += DeleteButton_Click;
             // 
             // HardwareList
             // 

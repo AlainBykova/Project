@@ -28,12 +28,12 @@ namespace Project_AP
             foreach (dynamic hdJson in responseJson)
             {
                 string name = hdJson.name;
-                int? id = hdJson.id as int?;
+                int id = hdJson.id;
 
                 Hardware hardware = new()
                 {
-                    Name = name,
-                    Id = id ?? -1,
+                    name = name,
+                    id = id,
                 };
 
                 hardwares.Add(hardware);
@@ -43,7 +43,7 @@ namespace Project_AP
 
         // парсинг информации о конкретном оборудовании (вся инфо об одном)
         public static Hardware InfoHardware(string responseBody, int hardware_id)
-        {
+        {   
             Hardware hardware = new();
             JArray jsonArray = JArray.Parse(responseBody);
 
@@ -51,27 +51,27 @@ namespace Project_AP
             {
                 if ((int)jsonObject["id"] == hardware_id)
                 {
-                    hardware.Name = jsonObject["name"].ToString();
-                    hardware.Type = jsonObject["type"].ToString();
-                    hardware.Description = jsonObject["description"].ToString();
-                    hardware.Image_link = jsonObject["image_link"].ToString();
-                    hardware.Id = (int)jsonObject["id"];
-                    hardware.Created = jsonObject["created"].ToString();
+                    hardware.name = jsonObject["name"].ToString();
+                    hardware.type = jsonObject["type"].ToString();
+                    hardware.description = jsonObject["description"].ToString();
+                    hardware.image_link = jsonObject["image_link"].ToString();
+                    hardware.id = (int)jsonObject["id"];
+                    hardware.created = jsonObject["created"].ToString();
 
                     JObject specificationObject = (JObject)jsonObject["specifications"];
-                    hardware.Specifications = new Dictionary<string, int>();
+                    hardware.specifications = new Dictionary<string, int>();
                     if (specificationObject != null)
                     {
                         foreach (JProperty property in specificationObject.Properties())
                         {
                             string key = property.Name;
                             int value = (int)property.Value;
-                            hardware.Specifications.Add(key, value);
+                            hardware.specifications.Add(key, value);
                         }
                     }
                     else
                     {
-                        hardware.Specifications.Add("Созданной спецификации", 0);
+                        hardware.specifications.Add("Созданной спецификации", 0);
                     }
                 }
             }
@@ -115,11 +115,11 @@ namespace Project_AP
 
                 Location location = new()
                 {
-                    Name = name,
-                    Created = created,
-                    Width = width,
-                    Height = height,
-                    Id = id,
+                    name = name,
+                    created = created,
+                    width = width,
+                    height = height,
+                    id = id,
                 };
 
                 locations.Add(location);
@@ -167,12 +167,12 @@ namespace Project_AP
 
                 Rack rack = new()
                 {
-                    Location = location,
-                    X = x,
-                    Y = y,
-                    Width = width,
-                    Height = height,
-                    Id = id,
+                    location = location,
+                    x = x,
+                    y = y,
+                    width = width,
+                    height = height,
+                    id = id,
                 };
                 racks.Add(rack);
             }
@@ -217,11 +217,11 @@ namespace Project_AP
 
                 Stock stock = new()
                 {
-                    Hardware = hardware,
-                    Rack_position = rack_position,
-                    Rack = rack,
-                    Id = id,
-                    Count = count,
+                    hardware = hardware,
+                    rack_position = rack_position,
+                    rack = rack,
+                    id = id,
+                    count = count,
                 };
                 stocks.Add(stock);
             }
@@ -266,11 +266,11 @@ namespace Project_AP
 
                 User user = new()
                 {
-                    First_name = f_name,
-                    Last_name = l_name,
-                    Patronymic = patronymic,
-                    Type = type,
-                    Id = id,
+                    first_name = f_name,
+                    last_name = l_name,
+                    patronymic = patronymic,
+                    type = type,
+                    id = id,
                 };
                 users.Add(user);
             }

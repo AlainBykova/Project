@@ -34,7 +34,7 @@ namespace Project_AP
                 List<Hardware> allHardware = ParseResponseHardware.InfoAllHardware(responseBody);
 
                 // фильтр
-                List<Hardware> filteredHardware = allHardware.FindAll(hardware => (hardware.Name.Contains(searchString)));
+                List<Hardware> filteredHardware = allHardware.FindAll(hardware => (hardware.name.Contains(searchString)));
                 return filteredHardware;
             }
             else
@@ -73,10 +73,10 @@ namespace Project_AP
             {
                 string responseBody = await response.Content.ReadAsStringAsync();
                 List<Hardware> allHardware = ParseResponseHardware.InfoAllHardware(responseBody);
-                 
+
                 // фильтр
-                Hardware hardware = allHardware.SingleOrDefault(hardware => (hardware.Id == hardware_id));
-                return hardware;
+                Hardware filteredHardware = allHardware.SingleOrDefault(hardware => (hardware.id == hardware_id));
+                return filteredHardware;
             }
             else
             {
@@ -119,24 +119,15 @@ namespace Project_AP
     // описание класса
     public class Hardware
     {
-        public string Name { get; set; }
-        public string Type { get; set; }
-        public string Description { get; set; }
-        public string Image_link { get; set; }
-        public int Id { get; set; }
-        public string Created { get; set; }
-        public Dictionary<string, int> Specifications { get; set; }
-        public int Location { get; set; }
-        public int Location_Name { get; set; }
-        public int Location_Width { get; set; }
-        public int Location_Height { get; set; }
-        public int Rack { get; set; }
-        public int Rack_Width { get; set; }
-        public int Rack_Height { get; set; }
-        public int Rack_X { get; set; }
-        public int Rack_Y { get; set; }
-        public int Stock { get; set; }
-        public int Rack_position { get; set; }
-        public int Count { get; set; }
+        public string name { get; set; }
+        public string type { get; set; }
+        public string description { get; set; }
+        public string image_link { get; set; }
+        public int id { get; set; }
+        public string created { get; set; }
+        public Dictionary<string, int> specifications { get; set; }
+        public List<Location> location { get; set; }
+        public List<Rack> rack { get; set; }
+        public List<Stock> stock { get; set; }
     }
 }

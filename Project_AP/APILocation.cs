@@ -35,7 +35,7 @@ namespace Project_AP
                 List<Location> allLocations = ParseResponseLocation.InfoLocation(responseBody);
 
                 // фильтры
-                List<Location> filteredLocations = allLocations.FindAll(location => (location.Name.Contains(searchString)));
+                List<Location> filteredLocations = allLocations.FindAll(location => (location.name.Contains(searchString)));
                 return filteredLocations;
             }
             else
@@ -57,7 +57,7 @@ namespace Project_AP
                 List<Location> allLocation = ParseResponseLocation.InfoLocation(responseBody);
 
                 // фильтры
-                Location location = allLocation.SingleOrDefault(location => (location.Id == loc_id));
+                Location location = allLocation.SingleOrDefault(location => (location.id == loc_id));
                 return location;
             }
             else
@@ -68,13 +68,8 @@ namespace Project_AP
         // Создание нового location и возврат его id
         public async Task<int> CreateNewLocationApi(Location location)
         {
-            loc iWannaSleep = new() {
-                name = location.Name,
-                height = location.Height,
-                width = location.Width,
-            };
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
-            string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(iWannaSleep);
+            string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(location);
             var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
             HttpResponseMessage response = await httpClient.PostAsync(apiUrl, content);
@@ -105,17 +100,11 @@ namespace Project_AP
     // описание класса
     public class Location
     {
-        public string Name { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
-        public int Id { get; set; }
-        public string Created { get; set; }
-    }
-    public class loc
-    {
         public string name { get; set; }
         public int width { get; set; }
         public int height { get; set; }
+        public int id { get; set; }
+        public string created { get; set; }
     }
 }
 

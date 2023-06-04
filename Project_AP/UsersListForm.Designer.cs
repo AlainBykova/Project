@@ -31,8 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UsersListForm));
             tableLayoutPanel2 = new TableLayoutPanel();
             tableLayoutPanel1 = new TableLayoutPanel();
-            AddButton = new Button();
-            DeleteButton = new Button();
             tableLayoutPanel5 = new TableLayoutPanel();
             IconPanel = new Panel();
             SearchButton = new Button();
@@ -86,10 +84,8 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 14.2857141F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 59.52381F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 4.76190472F));
-            tableLayoutPanel1.Controls.Add(AddButton, 1, 3);
-            tableLayoutPanel1.Controls.Add(DeleteButton, 3, 3);
             tableLayoutPanel1.Controls.Add(tableLayoutPanel5, 1, 1);
-            tableLayoutPanel1.Controls.Add(panel2, 1, 5);
+            tableLayoutPanel1.Controls.Add(panel2, 1, 3);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(66, 72);
             tableLayoutPanel1.Margin = new Padding(0);
@@ -102,36 +98,9 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 65F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.Size = new Size(748, 388);
             tableLayoutPanel1.TabIndex = 0;
-            // 
-            // AddButton
-            // 
-            AddButton.BackColor = Color.FromArgb(143, 142, 191);
-            AddButton.Dock = DockStyle.Fill;
-            AddButton.FlatAppearance.BorderSize = 0;
-            AddButton.FlatStyle = FlatStyle.Flat;
-            AddButton.Location = new Point(35, 67);
-            AddButton.Margin = new Padding(0);
-            AddButton.Name = "AddButton";
-            AddButton.Size = new Size(106, 29);
-            AddButton.TabIndex = 1;
-            AddButton.Text = "Добавить";
-            AddButton.UseVisualStyleBackColor = false;
-            // 
-            // DeleteButton
-            // 
-            DeleteButton.BackColor = Color.FromArgb(214, 215, 255);
-            DeleteButton.Dock = DockStyle.Fill;
-            DeleteButton.FlatAppearance.BorderSize = 0;
-            DeleteButton.FlatStyle = FlatStyle.Flat;
-            DeleteButton.Location = new Point(158, 67);
-            DeleteButton.Margin = new Padding(0);
-            DeleteButton.Name = "DeleteButton";
-            DeleteButton.Size = new Size(106, 29);
-            DeleteButton.TabIndex = 2;
-            DeleteButton.Text = "Удалить";
-            DeleteButton.UseVisualStyleBackColor = false;
             // 
             // tableLayoutPanel5
             // 
@@ -197,9 +166,10 @@
             tableLayoutPanel1.SetColumnSpan(panel2, 4);
             panel2.Controls.Add(UsersList);
             panel2.Dock = DockStyle.Fill;
-            panel2.Location = new Point(38, 118);
+            panel2.Location = new Point(38, 70);
             panel2.Name = "panel2";
-            panel2.Size = new Size(668, 246);
+            tableLayoutPanel1.SetRowSpan(panel2, 3);
+            panel2.Size = new Size(668, 294);
             panel2.TabIndex = 7;
             // 
             // UsersList
@@ -211,7 +181,7 @@
             UsersList.FlowDirection = FlowDirection.TopDown;
             UsersList.Location = new Point(0, 0);
             UsersList.Name = "UsersList";
-            UsersList.Size = new Size(668, 246);
+            UsersList.Size = new Size(668, 294);
             UsersList.TabIndex = 4;
             UsersList.WrapContents = false;
             // 
@@ -335,8 +305,6 @@
         private TextBox SearchTextBox;
         private Button SearchButton;
         private Panel IconPanel;
-        private Button AddButton;
-        private Button DeleteButton;
         private TableLayoutPanel tableLayoutPanel3;
         private Label EquipmentLabel;
         private Label UsersLabel;

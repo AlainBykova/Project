@@ -23,7 +23,7 @@ namespace Project_AP
             this.authorizationToken = authorizationToken;
         }
         // Получение данных о Stock через id hardware
-        public async Task<Stock> GetStockInfoUsingHardwareIdApi(int hardware_id)
+        public async Task<List<Stock>> GetStockInfoUsingHardwareIdApi(int hardware_id)
         {
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authorizationToken)));
             HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
@@ -35,7 +35,7 @@ namespace Project_AP
                 List <Stock> allStocks = ParseResponseStock.InfoStock(responseBody);
 
                 // фильтры
-                Stock filteredStock = allStocks.SingleOrDefault(stock => (stock.Hardware == hardware_id));
+                List<Stock> filteredStock = allStocks.FindAll(stock => (stock.hardware == hardware_id));
                 return filteredStock;
             }
             else
@@ -55,7 +55,7 @@ namespace Project_AP
                 string responseBody = await response.Content.ReadAsStringAsync();
                 List<Stock> allStocks = ParseResponseStock.InfoStock(responseBody);
                 // Фильтры
-                Stock stock = allStocks.SingleOrDefault(stock => (stock.Id == stock_id));
+                Stock stock = allStocks.SingleOrDefault(stock => (stock.id == stock_id));
                 return stock;
             }
             else
@@ -76,7 +76,7 @@ namespace Project_AP
                 List<Stock> allStocks = ParseResponseStock.InfoStock(responseBody);
 
                 // Фильтры
-                List<Stock> filteredStock = allStocks.FindAll(stock => (stock.Rack == rack_id));
+                List<Stock> filteredStock = allStocks.FindAll(stock => (stock.rack == rack_id));
                 return filteredStock;
             }
             else
@@ -120,11 +120,11 @@ namespace Project_AP
     // Описание класса
     public class Stock
     {
-        public int Hardware { get; set; }
-        public int Rack { get; set; }
-        public int Rack_position { get; set; }
-        public int Id { get; set; }
-        public int Count { get; set; }
+        public int hardware { get; set; }
+        public int rack { get; set; }
+        public int rack_position { get; set; }
+        public int id { get; set; }
+        public int count { get; set; }
     }
 }
 

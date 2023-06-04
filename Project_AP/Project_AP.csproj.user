@@ -4,13 +4,22 @@
     <Compile Update="AddLocationInfo.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="AddRackInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="AddStorageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="EquipmentAllLocations.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="EquipmentForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="EquipmentListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="EquipmentLocationDetails.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="LoginForm1.cs">
