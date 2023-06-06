@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "auSmw72JPhl+CcdRsBi83oX2jsx+ss71Hh933e9oMos/rLtCYLbFVHyc/UvuJDNxRK55S72E2kn1b+A2XRkleA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Настя\\Source\\Repos\\TheSleepySparrow\\Project\\Project_AP\\Project_AP.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Настя\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\6.0.0\\microsoft.extensions.logging.abstractions.6.0.0.nupkg.sha512",
+    "C:\\Users\\Настя\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\Настя\\.nuget\\packages\\npgsql\\7.0.1\\npgsql.7.0.1.nupkg.sha512",
+    "C:\\Users\\Настя\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
